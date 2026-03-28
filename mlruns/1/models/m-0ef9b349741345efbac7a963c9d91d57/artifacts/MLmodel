@@ -1,0 +1,23 @@
+artifact_path: file:///C:/Users/aksha/Loan_default_dataset/mlruns/1/models/m-0ef9b349741345efbac7a963c9d91d57/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.0
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.9.0
+model_id: m-0ef9b349741345efbac7a963c9d91d57
+model_size_bytes: 463226
+model_uuid: m-0ef9b349741345efbac7a963c9d91d57
+prompts: null
+run_id: 5f30208f0cd944e38db064d8e8419da5
+utc_time_created: '2026-03-18 17:37:40.208280'
