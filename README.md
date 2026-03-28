@@ -17,6 +17,7 @@ Support loan approval decisions
 Analyze portfolio-level credit risk
 
 🔹 Features
+
 🔸 Risk Assessment Engine
 Predicts Probability of Default (PD)
 Dynamically updates credit score
