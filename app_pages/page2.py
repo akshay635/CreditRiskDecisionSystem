@@ -157,12 +157,12 @@ def PortfolioDashboard():
     # -------------------------------
     col16, col17, col18 = st.columns(3)
 
-    col16.subheader('Loan Default rate distribution of borrowers', width=300)
+    col16.subheader('Loan Default rate distribution of borrowers', width=400)
     fig = px.pie(df, names='LoanDefault')
     col16.plotly_chart(fig, width=300)
-    col16.info("0: non-defaulters\n\n1: defaulters", width=300)
+    col16.info("0: non-defaulters\n\n1: defaulters", width=400)
 
-    col17.subheader('Distribution of Borrowers by Loan Purpose', width=300)
+    col17.subheader('Distribution of Borrowers by Loan Purpose', width=400)
     fig1 = px.pie(df, names='LoanPurpose')
     col17.plotly_chart(fig1, width=400)
 
