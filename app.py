@@ -70,7 +70,6 @@ elif page == "EMI Calculator":
 
     rate = st.slider("Enter the Interest rate (%)", 1.0, 30.0)
 
-    # ❗ FIXED LOGIC (safe correction)
     if rate < 1.0 or rate > 30.0:
         st.error("Please provide valid interest rate")
 
@@ -105,7 +104,7 @@ else:
     best_score = cv["pr_auc"].iloc[0]
 
     st.info(
-        f"{best_model} is selected as the final model based on highest PR-AUC "
+        f"{best_model} is selected as the final model based on the highest PR-AUC "
         f"({best_score:.2f}) during cross-validation."
     )
 
@@ -116,7 +115,7 @@ else:
 
     st.markdown("---")
 
-    # -------------------------------
+    # ------------------------------
     # Test Performance
     # -------------------------------
     st.subheader("Final Model Performance on Test Dataset")
