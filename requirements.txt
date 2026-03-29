@@ -10,7 +10,6 @@ streamlit>=1.52.2
 plotly==6.5.0                                                 
 xgboost==3.1.2
 mlflow<=3.9.0
-PIL
 pandera
 pydantic
 altair
