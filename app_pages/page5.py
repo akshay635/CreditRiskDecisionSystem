@@ -14,17 +14,6 @@ def ModelDashboard():
     cv = pd.read_csv(config.CROSS_VALIDATION)
     metrics = pd.read_csv(config.METRICS)
 
-    st.markdown("---")
-    # Displaying the confusion matrix
-    st.subheader('Confusion Matrix')
-
-    confusion_matrix = Image.open(config.CONFUSION_MATRIX)
-    
-    # Display the image with a caption
-    st.image(confusion_matrix, caption="Confusion Matrix", use_column_width=True)
-    st.info('Top left shows True Negatives, bottom left shows False Negatives, top right shows False Positives and bottom right shows True Positives')
-    st.markdown("---")
-
     # -------------------------------
     # Cross Validation Results
     # -------------------------------
@@ -61,6 +50,21 @@ def ModelDashboard():
     col4.metric("Precision", f"{metrics['Precision'].iloc[0]:.2%}")
     col5.metric("Recall", f"{metrics['Recall'].iloc[0]:.2%}")
     col6.metric("F1 Score", f"{metrics['F1'].iloc[0]:.2%}")
+
+    # ------------------------------
+    # Confusion Matrix
+    # -------------------------------
+
+    st.markdown("---")
+    # Displaying the confusion matrix
+    st.subheader('Confusion Matrix')
+
+    confusion_matrix = Image.open(config.CONFUSION_MATRIX)
+    
+    # Display the image with a caption
+    st.image(confusion_matrix, caption="Confusion Matrix", use_column_width=True)
+    st.info('Top left shows True Negatives, bottom left shows False Negatives, top right shows False Positives and bottom right shows True Positives')
+    st.markdown("---")
 
     # -------------------------------
     # Interpretation
