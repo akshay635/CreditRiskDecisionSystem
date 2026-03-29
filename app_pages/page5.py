@@ -1,10 +1,10 @@
 import pandas as pd
+from PIL import Image
 import importlib
 import training.config as config
 importlib.reload(config)
 
 def ModelDashboard():
-  
     st.title("📊 Model Performance Dashboard")
 
     # -------------------------------
@@ -13,6 +13,15 @@ def ModelDashboard():
     cv = pd.read_csv(config.CROSS_VALIDATION)
     metrics = pd.read_csv(config.METRICS)
 
+    st.markdown("---")
+    # Displaying the confusion matrix
+    st.subheader('Confusion Matrix')
+
+    confusion_matrix = Image.open(config.CONFUSION_MATRIX)
+    
+    # Display the image with a caption
+    st.image(confusion_matrix, caption="Confusion Matrix", use_column_width=True)
+    st.info('Top left shows True Negatives, bottom left shows False Negatives, top right shows False Positives and bottom right shows True Positives')
     st.markdown("---")
 
     # -------------------------------
