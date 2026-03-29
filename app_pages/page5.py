@@ -1,1 +1,67 @@
+import pandas as pd
+import importlib
+import training.config as config
+importlib.reload(config)
 
+def ModelDashboard():
+  
+    st.title("📊 Model Performance Dashboard")
+
+    # -------------------------------
+    # Load Artifacts
+    # -------------------------------
+    cv = pd.read_csv(config.CROSS_VALIDATION)
+    metrics = pd.read_csv(config.METRICS)
+
+    st.markdown("---")
+
+    # -------------------------------
+    # Cross Validation Results
+    # -------------------------------
+    st.subheader("Model Comparison (Cross-Validation Results)")
+    st.dataframe(cv)
+
+    best_model = cv["model"].iloc[0]
+    best_score = cv["pr_auc"].iloc[0]
+
+    st.info(
+        f"{best_model} is selected as the final model based on the highest PR-AUC "
+        f"({best_score:.2f}) during cross-validation."
+    )
+
+    st.caption(
+        "📌 PR-AUC is used as the primary metric due to class imbalance, "
+        "capturing performance on the minority (default) class more effectively."
+    )
+
+    st.markdown("---")
+
+    # ------------------------------
+    # Test Performance
+    # -------------------------------
+    st.subheader("Final Model Performance on Test Dataset")
+
+    col1, col2, col3 = st.columns(3)
+    col4, col5, col6 = st.columns(3)
+
+    col1.metric("ROC-AUC", f"{metrics['ROC-AUC'].iloc[0]:.2f}")
+    col2.metric("PR-AUC ⭐", f"{metrics['PR-AUC'].iloc[0]:.2f}")
+    col3.metric("Accuracy", f"{metrics['Accuracy'].iloc[0]:.2%}")
+
+    col4.metric("Precision", f"{metrics['Precision'].iloc[0]:.2%}")
+    col5.metric("Recall", f"{metrics['Recall'].iloc[0]:.2%}")
+    col6.metric("F1 Score", f"{metrics['F1'].iloc[0]:.2%}")
+
+    # -------------------------------
+    # Interpretation
+    # -------------------------------
+    st.markdown("### 📊 Interpretation")
+
+    st.write(f"""
+    - PR-AUC is the primary metric for model selection due to class imbalance.
+    - The model achieves strong discrimination with ROC-AUC of {metrics['ROC-AUC'].iloc[0]:.2f} 
+      and PR-AUC of {metrics['PR-AUC'].iloc[0]:.2f}.
+    - High recall ({metrics['Recall'].iloc[0]:.2%}) ensures most defaulters are correctly identified.
+    - Lower precision ({metrics['Precision'].iloc[0]:.2%}) indicates some false positives, 
+      which is acceptable in credit risk scenarios.
+    """)
