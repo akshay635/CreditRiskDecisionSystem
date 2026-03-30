@@ -31,6 +31,10 @@ def RiskAssessment():
     df = pd.DataFrame([user_inputs])
     valid_df = validate_data(df)
 
+    if valid_df.empty:
+        st.error("⚠️ Invalid input data. Please check inputs.")
+        st.stop()
+
     # -------------------------------
     # Threshold Settings
     # -------------------------------
@@ -39,6 +43,15 @@ def RiskAssessment():
     low = st.slider("Lower Threshold", 0.0, 0.45, 0.30)
     high = st.slider("Higher Threshold", 0.45, 1.0, 0.60)
 
+    if low >= high:
+        st.error("Invalid threshold limits. ⚠️ Lower threshold must be less than higher threshold")
+        st.stop()
+
+    loan_amount = valid_df['LoanAmount'].iloc[0]
+
+    if loan_amount <= 0:
+        st.error("⚠️ Loan amount must be greater than 0")
+        st.stop()
     # -------------------------------
     # Prediction Trigger
     # -------------------------------
@@ -80,14 +93,25 @@ def RiskAssessment():
         st.metric("Decision", decision)
         st.metric("Risk Level", risk_level)
 
+        st.caption("""
+        Decision is based on Probability of Default (PD):
+        • PD < Lower Threshold → Low Risk (Approve)
+        • PD between thresholds → Medium Risk (Review)
+        • PD > Higher Threshold → High Risk (Reject)
+        """)
+
         # -------------------------------
         # Explainability
         # -------------------------------
         features_df = get_feature_importance(model)
 
         with st.expander("Key drivers of the outcome"):
+            st.caption("Feature importance shows relative contribution to prediction (not causation).")
             st.table(features_df.head())
 
             st.bar_chart(
                 features_df.head().set_index("Cleaned_Features")
             )
+
+            st.info(f"{features_df['Cleaned_Features'].iloc[0]}, {features_df['Cleaned_Features'].iloc[1]} and \ 
+                      {features_df['Cleaned_Features'].iloc[2]} are the key features which are influencing the final outcome"
