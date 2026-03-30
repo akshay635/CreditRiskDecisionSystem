@@ -93,10 +93,10 @@ def RiskAssessment():
         st.metric("Decision", decision)
         st.metric("Risk Level", risk_level)
 
-        st.caption("""
-        Decision is based on Probability of Default (PD):
-        • PD < Lower Threshold → Low Risk (Approve)
-        • PD between thresholds → Medium Risk (Review)
+        st.info("""
+        Decision is based on Probability of Default (PD):\n
+        • PD < Lower Threshold → Low Risk (Approve)\n
+        • PD between thresholds → Medium Risk (Review)\n
         • PD > Higher Threshold → High Risk (Reject)
         """)
 
