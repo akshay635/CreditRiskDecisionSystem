@@ -113,5 +113,7 @@ def RiskAssessment():
                 features_df.head().set_index("Cleaned_Features")
             )
 
-            st.info(f"{features_df['Cleaned_Features'].iloc[0]},", f"{features_df['Cleaned_Features'].iloc[1]}", "and ",
-                      f"{features_df['Cleaned_Features'].iloc[2]}", "are the key features which are influencing the final outcome.")
+            top_1 = features_df['Cleaned_Features'].iloc[0]
+            top_2 = features_df['Cleaned_Features'].iloc[1]
+            top_3 = features_df['Cleaned_Features'].iloc[2]
+            st.info(f"{top_1}, {top_2} and {top_3} are the key features which are influencing the final outcome.")
