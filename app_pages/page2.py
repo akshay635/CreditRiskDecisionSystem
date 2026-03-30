@@ -23,6 +23,7 @@ def PortfolioDashboard():
 
     st.markdown("# 🏦 Credit Risk BI Dashboard")
     st.markdown("### Real-time Loan Risk Monitoring & Decision System")
+    st.caption("📊 Model trained on historical loan data and evaluated on a separate test dataset.")
     st.markdown("---")
 
     # -------------------------------
