@@ -7,7 +7,7 @@ importlib.reload(config)
 
 def ModelDashboard():
     st.title("📊 Model Performance Dashboard")
-
+    st.caption("📌 Metrics are calculated at decision threshold = 0.45")
     # -------------------------------
     # Load Artifacts
     # -------------------------------
