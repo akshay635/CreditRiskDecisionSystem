@@ -12,22 +12,13 @@ def load_user_data():
     age = int(st.sidebar.slider('Age', 18, 100, 40))
     
     # Validate retired condition
-    if employment == "Retired":
-        if age < 60:
+    if employment == "Retired" and age < 60:
             st.error("Please enter a valid age (>= 60) if retired.")
         else:
-            # Pensioners can still have income, so allow input
-            annual_income = st.sidebar.number_input(
-                "Annual Pension/Income",
-                min_value=50_000,
-                max_value=10_000_000,
-                value=300_000,
-                step=10_000
-            )
-            monthly_income = round(annual_income / 12, 2)
+            pass
     
     # Handle unemployed or student
-    elif employment in ["Unemployed", "Student"]:
+    if employment in ["Unemployed", "Student"]:
         annual_income = 0
         monthly_income = 0
         st.warning(f"As {employment}, income is set to 0.")
