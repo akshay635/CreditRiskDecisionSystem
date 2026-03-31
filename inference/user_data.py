@@ -3,14 +3,13 @@ import streamlit as st
 def load_user_data():
     
     st.sidebar.header("👤 Borrower Details")
-    loan_id = str(st.sidebar.text_input('Enter the loan id'))
-    name = str(st.sidebar.text_input('Enter the full name'))
-    age = int(st.sidebar.slider('Enter the age', 18, 100, 40))
+    loan_id = str(st.sidebar.text_input('Loan id'))
+    name = str(st.sidebar.text_input('Full name'))
     gender = str(st.sidebar.selectbox('Gender', ['Male', 'Female', 'Other']))
     marital_status = str(st.sidebar.selectbox('Marital status', ['Single', 'Married', 'Widowed', 'Divorced']))
     education = str(st.sidebar.selectbox("Education Level", ["Bachelor's", "Master's", "High school", "Phd", "Other"]))
     employment = str(st.sidebar.selectbox("Employment Type", ["Employed", "Self-employed", "Unemployed", "Retired", "Student"]))
-    
+    age = int(st.sidebar.slider('Age', 18, 100, 40))
     # Validate retired condition
     if employment == "Retired":
         if age < 60:
@@ -18,7 +17,7 @@ def load_user_data():
         else:
             # Pensioners can still have income, so allow input
             annual_income = st.sidebar.number_input(
-                "Enter Annual Pension/Income",
+                "Annual Pension/Income",
                 min_value=50_000,
                 max_value=10_000_000,
                 value=300_000,
@@ -35,7 +34,7 @@ def load_user_data():
     # Handle employed/self-employed
     else:
         annual_income = st.sidebar.slider(
-            "Enter Annual Income",
+            "Annual Income",
             min_value=100_000,
             max_value=10_000_000,
             value=500_000,
