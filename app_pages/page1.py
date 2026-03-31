@@ -12,7 +12,7 @@ from core.decision import get_decision
 from core.business import calculate_lgd, expected_loss
 from core.explain import get_feature_importance
 from inference.user_data import load_user_data
-from inference.inference_data_validation import validate_data
+from inference.inference_data_validation import validate_input_data
 from inference.risk_category import GradeSubgrade
 
 
@@ -29,7 +29,7 @@ def RiskAssessment():
     # -------------------------------
     user_inputs = load_user_data()
     df = pd.DataFrame([user_inputs])
-    valid_df = validate_data(df)
+    valid_df = validate_input_data(df)
 
     if valid_df.empty:
         st.error("⚠️ Invalid input data. Please check inputs.")
