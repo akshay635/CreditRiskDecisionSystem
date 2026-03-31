@@ -8,12 +8,13 @@ def load_user_data():
     gender = str(st.sidebar.selectbox('Gender', ['Male', 'Female', 'Other']))
     marital_status = str(st.sidebar.selectbox('Marital status', ['Single', 'Married', 'Widowed', 'Divorced']))
     education = str(st.sidebar.selectbox("Education Level", ["Bachelor's", "Master's", "High school", "Phd", "Other"]))
-    employment = str(st.sidebar.selectbox("Employment Type", ["Employed", "Self-employed", "Unemployed", "Retired", "Student"]))
     age = int(st.sidebar.slider('Age', 18, 100, 40))
+    employment = str(st.sidebar.selectbox("Employment Type", ["Employed", "Self-employed", "Unemployed", "Retired", "Student"]))
     
     # Validate retired condition
     if employment == "Retired" and age < 60:
         st.error("Please enter a valid age (>= 60) if retired.")
+        st.stop()
     else:
         pass
     
