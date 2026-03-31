@@ -13,9 +13,9 @@ def load_user_data():
     
     # Validate retired condition
     if employment == "Retired" and age < 60:
-            st.error("Please enter a valid age (>= 60) if retired.")
-        else:
-            pass
+        st.error("Please enter a valid age (>= 60) if retired.")
+    else:
+        pass
     
     # Handle unemployed or student
     if employment in ["Unemployed", "Student"]:
