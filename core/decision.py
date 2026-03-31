@@ -7,8 +7,8 @@ def get_decision(prob, low, high):
 
     elif low < prob <= high:
         return (
-            "The borrower shows moderate risk with some inconsistencies in financial behavior and a slightly higher debt burden. \n\n\
-            Default risk is manageable but requires further assessment.\n\  ⚠️ Decision: Review (Manual assessment recommended).")
+            "The borrower shows moderate risk with some inconsistencies in financial behavior and a slightly higher debt burden.\n\Default risk is manageable but requires further assessment.
+            \n\⚠️ Decision: Review (Manual assessment recommended).")
 
     else:
         return (
