@@ -37,8 +37,8 @@ def load_user_data():
         )
         monthly_income = round(annual_income / 12, 2)
 
-    st.write(f"Annual Income: ₹{annual_income:,.0f}")
-    st.write(f"Monthly Income: ₹{monthly_income:,.0f}")
+    #st.write(f"Annual Income: ₹{annual_income:,.0f}")
+    #st.write(f"Monthly Income: ₹{monthly_income:,.0f}")
 
     # ================= CREDIT DETAILS =================
     st.sidebar.header("📊 Credit Profile")
