@@ -2,7 +2,7 @@ import importlib
 import training.config as config
 importlib.reload(config)
 from pandera import Column, DataFrameSchema, Check
-from pandera.errors import SchemaValidationError
+from pandera.errors import SchemaError
 
 def validate_input_data(new_df):
 
@@ -51,6 +51,6 @@ def validate_input_data(new_df):
         validated_df = schema.validate(new_df)
         return validated_df
 
-    except SchemaValidationError as e:
+    except SchemaError as e:
         st.error("⚠️ Data validation failed. Please check input values.")
         return None
