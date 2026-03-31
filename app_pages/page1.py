@@ -90,7 +90,13 @@ def RiskAssessment():
         col3.metric("Expected Loss", f"₹{round(loss)}/-")
         col4.metric("Grade", grade)
 
-        st.metric("Decision", decision)
+        if prob <= low:
+            st.sucesss(decision)
+        elif low < prob <= high:
+            st.warning(decision)
+        else:
+            st.error(decision)
+            
         st.metric("Risk Level", risk_level)
 
         st.info("""
