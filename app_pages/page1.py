@@ -91,7 +91,7 @@ def RiskAssessment():
         col4.metric("Grade", grade)
 
         if prob <= low:
-            st.sucesss(decision)
+            st.success(decision)
         elif low < prob <= high:
             st.warning(decision)
         else:
