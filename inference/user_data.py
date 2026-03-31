@@ -10,6 +10,7 @@ def load_user_data():
     education = str(st.sidebar.selectbox("Education Level", ["Bachelor's", "Master's", "High school", "Phd", "Other"]))
     employment = str(st.sidebar.selectbox("Employment Type", ["Employed", "Self-employed", "Unemployed", "Retired", "Student"]))
     age = int(st.sidebar.slider('Age', 18, 100, 40))
+    
     # Validate retired condition
     if employment == "Retired":
         if age < 60:
