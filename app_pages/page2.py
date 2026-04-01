@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import altair as alt
 import plotly.express as px
+import plotly.graph_objects as go
 import importlib
 import training.config as config
 
@@ -161,8 +162,12 @@ def PortfolioDashboard():
     # -------------------------------
     col16, col17, col18 = st.columns(3)
 
+    default_rate = pd.DataFrame((df['LoanDefault'].value_counts(normalize=True)*100).reset_index())
+    labels = default_rate.LoanDefault
+    values = default_rate.proportion
     col16.subheader('Loan Default rate distribution of borrowers', width=400)
-    fig = px.pie(df, names='LoanDefault')
+    # Use `hole` to create a donut-like pie chart
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0.3], title='Loan Default Rate')])
     col16.plotly_chart(fig, width=300)
     col16.info("0: non-defaulters\n\n1: defaulters", width=400)
 
