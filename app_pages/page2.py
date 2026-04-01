@@ -161,15 +161,18 @@ def PortfolioDashboard():
     # Distribution Charts
     # -------------------------------
     col16, col17, col18 = st.columns(3)
+    
     # Loan Default Rate
     default_rate = pd.DataFrame((df['LoanDefault'].value_counts(normalize=True)*100).reset_index())
     labels = default_rate.LoanDefault
     values = default_rate.proportion
     col16.subheader('Loan Default rate distribution of borrowers', width=400)
+    
     # Use `hole` to create a donut-like pie chart
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0.3])])
     col16.plotly_chart(fig, width=300)
     col16.info("0: non-defaulters\n\n1: defaulters", width=400)
+    
     # Loan Purpose
     loan_purpose = pd.DataFrame((df['LoanPurpose'].value_counts(normalize=True)*100).reset_index())
     l = loan_purpose.LoanPurpose
@@ -177,6 +180,7 @@ def PortfolioDashboard():
     col17.subheader('Distribution of Borrowers by Loan Purpose', width=400)
     fig1 = go.Figure(data=[go.Pie(labels=l, values=v, hole=0.3)])
     col17.plotly_chart(fig1, width=400)
+    
     # Employment Status
     col18.subheader('Employment status of borrowers', width=300)
     fig2 = px.pie(df, names='EmploymentStatus')
