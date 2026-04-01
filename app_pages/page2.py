@@ -59,12 +59,15 @@ def PortfolioDashboard():
     # -------------------------------
     # KPI Display
     # -------------------------------
+    st.container()
     col1, col2, col3, col4 = st.columns(4)
 
     col1.metric('Loan Default Rate', f'{round(default_rate)}%', border=True)
     col2.metric('Median Annual Salary', f'₹{round(med_annual_income)}/-', border=True)
     col3.metric('Median Monthly Salary', f'₹{round(med_monthly_income)}/-', border=True)
     col4.metric('Avg Loan Exposure', f'₹{round(avg_loan_amount)}/-', border=True)
+
+    st.container()
 
     col5, col6, col7, col8, col9 = st.columns(5)
 
