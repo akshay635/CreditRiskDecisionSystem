@@ -168,7 +168,7 @@ def PortfolioDashboard():
     col16.subheader('Loan Default rate distribution of borrowers', width=400)
     # Use `hole` to create a donut-like pie chart
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0.3], title='Loan Default Rate')])
-    col16.pyplot(fig, width=300)
+    col16.plotly_chart(fig, width=300)
     col16.info("0: non-defaulters\n\n1: defaulters", width=400)
 
     col17.subheader('Distribution of Borrowers by Loan Purpose', width=400)
