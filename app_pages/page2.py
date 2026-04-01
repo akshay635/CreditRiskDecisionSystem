@@ -61,18 +61,18 @@ def PortfolioDashboard():
     # -------------------------------
     col1, col2, col3, col4 = st.columns(4)
 
-    col1.metric('Loan Default Rate', f'{round(default_rate)}%')
-    col2.metric('Median Annual Salary', f'₹{round(med_annual_income)}/-')
-    col3.metric('Median Monthly Salary', f'₹{round(med_monthly_income)}/-')
-    col4.metric('Avg Loan Exposure', f'₹{round(avg_loan_amount)}/-')
+    col1.metric('Loan Default Rate', f'{round(default_rate)}%', border=True)
+    col2.metric('Median Annual Salary', f'₹{round(med_annual_income)}/-', border=True)
+    col3.metric('Median Monthly Salary', f'₹{round(med_monthly_income)}/-', border=True)
+    col4.metric('Avg Loan Exposure', f'₹{round(avg_loan_amount)}/-', border=True)
 
     col5, col6, col7, col8, col9 = st.columns(5)
 
-    col5.metric('Max Credit Score', max_credit_score)
-    col6.metric('Min Credit Score', min_credit_score)
-    col7.metric('Avg Debt Burden', f'{round(avg_dti)}%')
-    col8.metric('Max Credit Lines', max_accounts)
-    col9.metric('Avg no of delinquencies', int(np.ceil(avg_delinquencies)))
+    col5.metric('Max Credit Score', max_credit_score, border=True)
+    col6.metric('Min Credit Score', min_credit_score, border=True)
+    col7.metric('Avg Debt Burden', f'{round(avg_dti)}%', border=True)
+    col8.metric('Max Credit Lines', max_accounts, border=True)
+    col9.metric('Avg no of delinquencies', int(np.ceil(avg_delinquencies)), border=True)
 
     # -------------------------------
     # Aggregations
