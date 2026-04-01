@@ -175,7 +175,7 @@ def PortfolioDashboard():
     l = loan_purpose.LoanPurpose
     v = loan_purpose.proportion
     col17.subheader('Distribution of Borrowers by Loan Purpose', width=400)
-    fig1 = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0.3)])
+    fig1 = go.Figure(data=[go.Pie(labels=l, values=v, hole=0.3)])
     col17.plotly_chart(fig1, width=400)
 
     col18.subheader('Employment status of borrowers', width=300)
