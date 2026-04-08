@@ -73,11 +73,18 @@ It combines ML predictions + business logic + portfolio insights.
 💡 Financial Tools
 
 - Credit Score Simulator
+ 
+<img width="1888" height="903" alt="image" src="https://github.com/user-attachments/assets/62aa709f-54e5-4477-b577-d14f0617b4e9" />
+
 - EMI Calculator
+
+<img width="1902" height="910" alt="image" src="https://github.com/user-attachments/assets/71dc641f-fe10-4783-bca2-f8a9194486df" />
 
 ---
 
 📊 Model Performance
+
+<img width="1893" height="827" alt="image" src="https://github.com/user-attachments/assets/76714702-3fa6-4efd-b912-36aabcb89f91" />
 
 - ROC-AUC: 0.89
 - PR-AUC: 0.79
