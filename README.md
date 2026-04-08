@@ -1,88 +1,11 @@
-# Credit Risk Decision System
+💳 Credit Risk Decision System
 
-🔹 Project Title:
+"Python" (https://img.shields.io/badge/Python-3.10-blue)
+"ML" (https://img.shields.io/badge/Machine%20Learning-Scikit--learn-orange)
+"Deployment" (https://img.shields.io/badge/Deployed-Streamlit-green)
+"Status" (https://img.shields.io/badge/Project-Active-brightgreen)
 
-Credit Risk BI Dashboard & ML Decision System
-
-🔹 Overview:
-
-This project is an end-to-end Credit Risk Analytics System that integrates Machine Learning and Business Intelligence dashboards to support loan decision-making.
-
-It predicts borrower default risk and provides both individual-level decisions and portfolio-level insights.
-
-🔹 Objectives: 
-
-Predict Probability of Default (PD) for borrowers
-Classify borrowers into risk segments
-Support loan approval decisions
-Analyze portfolio-level credit risk
-
-🔹 Features:
-
-🔸 Risk Assessment Engine:
-
-Predicts Probability of Default (PD)
-Dynamically updates credit score
-Segments borrowers into risk categories
-Generates decisions: Approve / Review / Reject
-
-🔸 Credit Risk BI Dashboard:
-
-Portfolio KPIs (default rate, income, DTI, etc.)
-Risk segmentation:
-Employment status
-Credit score buckets
-DTI buckets
-Automated insights highlighting high-risk segments
-Borrower distribution analysis
-
-🔸 Financial Tools:
-
-1)Credit score simulator
-2)EMI calculator
-
-🔸 Model Performance Dashboard:
-
-Model comparison using cross-validation
-Models used:
-Logistic Regression
-Random Forest
-XGBoost
-LightGBM
-Model selection based on PR-AUC for imbalanced data
-Performance evaluation after hyperparameter tuning
-
-🔹 Model Performance:
-
-Metric	Value
-ROC-AUC	0.89
-PR-AUC	0.79
-Accuracy	78.57%
-Recall	79.18%
-Precision	47.86%
-F1 Score	59.66%
-
-🔹 Key Insights:
-
-Unemployed borrowers show the highest default risk
-A low credit score significantly increases default probability
-High DTI is a strong predictor of default
-Recall prioritized to minimize missed defaulters
-
-🔹 Tech Stack:
-
-Python (Pandas, NumPy)
-Scikit-learn, LightGBM
-Streamlit (Dashboard)
-Altair (Visualization)
-
-🔹 Business Impact
-
-Enables early identification of high-risk borrowers
-Supports data-driven loan approval decisions
-Helps reduce potential financial losses💳 Credit Risk Decision System
-
-An end-to-end Machine Learning system designed to predict the probability of loan default and support data-driven lending decisions.
+An end-to-end Machine Learning + Business Intelligence system to predict Probability of Default (PD) and support data-driven loan decisions.
 
 ---
 
@@ -92,30 +15,64 @@ An end-to-end Machine Learning system designed to predict the probability of loa
 
 ---
 
+📸 Screenshots
+
+🔹 Risk Prediction Interface
+
+"App Screenshot" (assets/app_ui.png)
+
+🔹 BI Dashboard
+
+"Dashboard Screenshot" (assets/dashboard.png)
+
+---
+
 🎯 Problem Statement
 
-Financial institutions need reliable systems to identify high-risk borrowers and minimize potential losses.
-This project focuses on predicting Probability of Default (PD) using borrower financial and behavioral data.
+Financial institutions need reliable systems to identify high-risk borrowers and minimize losses.
+This project predicts default risk using borrower financial and behavioral data.
 
 ---
 
 🧠 Solution Overview
 
-This system analyzes borrower features such as credit score, income, and debt-to-income ratio to estimate default risk and generate actionable decisions:
+The system analyzes borrower features such as credit score, income, and debt-to-income ratio to estimate default probability and generate decisions:
 
 - ✅ Approve
 - ⚠️ Review
 - ❌ Reject
 
+It combines ML predictions + business logic + portfolio insights.
+
 ---
 
 ⚙️ Key Features
 
-- End-to-end ML pipeline (data preprocessing → modeling → evaluation → deployment)
-- Handles imbalanced data using recall and PR-AUC focused evaluation
-- Real-time prediction using Streamlit interface
-- Risk segmentation based on probability thresholds
-- Business-aligned decision logic
+🔹 Risk Assessment Engine
+
+- Predicts Probability of Default (PD)
+- Dynamic risk scoring
+- Borrower segmentation
+- Decision engine (Approve / Review / Reject)
+
+---
+
+📊 BI Dashboard
+
+- Portfolio KPIs (default rate, income, DTI)
+- Risk segmentation:
+  - Credit score buckets
+  - DTI buckets
+  - Employment status
+- Automated insights
+- Distribution analysis
+
+---
+
+💡 Financial Tools
+
+- Credit Score Simulator
+- EMI Calculator
 
 ---
 
@@ -123,18 +80,24 @@ This system analyzes borrower features such as credit score, income, and debt-to
 
 - ROC-AUC: 0.89
 - PR-AUC: 0.79
-- Recall: 79% (focused on identifying high-risk borrowers)
+- Recall: 79%
+
+---
+
+🏗️ System Architecture
+
+Data → Validation → Feature Engineering → ML Model → Probability → Decision Engine → Streamlit App
 
 ---
 
 🛠️ Tech Stack
 
-- Programming: Python, SQL
-- ML Libraries: Scikit-learn, XGBoost, LightGBM
-- Data Processing: Pandas, NumPy
-- Visualization: Matplotlib, Seaborn
-- Deployment: Streamlit
-- Version Control: Git, GitHub
+- Python, SQL
+- Scikit-learn, XGBoost, LightGBM
+- Pandas, NumPy
+- Matplotlib, Seaborn
+- Streamlit
+- Git & GitHub
 
 ---
 
@@ -146,24 +109,24 @@ This system analyzes borrower features such as credit score, income, and debt-to
 4. Model Training & Evaluation
 5. Hyperparameter Tuning
 6. Final Model Selection
-7. Deployment using Streamlit
+7. Deployment
 
 ---
 
 💡 Key Learnings
 
-- Handling imbalanced data requires focusing on recall and PR-AUC rather than accuracy
-- Feature engineering and domain understanding significantly impact model performance
-- Probability-based decision systems are more practical than binary predictions
+- Imbalanced data requires Recall & PR-AUC focus
+- Feature engineering drives performance
+- Probability-based systems improve decision-making
 
 ---
 
 🚀 Future Improvements
 
-- Deploy model as REST API using FastAPI
-- Add model monitoring and drift detection
-- Integrate explainability (SHAP values)
-- Enhance UI/UX for better user experience
+- FastAPI deployment (production-ready API)
+- Model monitoring & drift detection
+- Explainability (SHAP)
+- UI enhancements
 
 ---
 
@@ -177,4 +140,4 @@ Machine Learning Engineer | Data Science | Credit Risk Analytics
 
 ---
 
-⭐ If you found this project useful, feel free to star the repository!
+⭐ If you found this project useful, consider giving it a star!
