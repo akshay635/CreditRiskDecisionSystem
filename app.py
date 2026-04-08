@@ -7,10 +7,11 @@ import training.config as config
 importlib.reload(config)
 
 from app_pages.page1 import RiskAssessment
-from app_pages.page2 import PortfolioDashboard
-from app_pages.page3 import CreditScoreCalculator
-from app_pages.page4 import EMICalculator
-from app_pages.page5 import ModelDashboard
+from app_pages.page2 import BatchWiseAssessment
+from app_pages.page3 import PortfolioDashboard
+from app_pages.page4 import CreditScoreCalculator
+from app_pages.page5 import EMICalculator
+from app_pages.page6 import ModelDashboard
 
 # -------------------------------
 # Page Config
@@ -23,7 +24,8 @@ st.set_page_config("Credit Risk Decision System", page_icon='🏦', layout='wide
 page = st.sidebar.selectbox(
     "Select Page",
     [
-        "Risk Assessment",
+        "Risk Assessment (Single Borrower)",
+        'Batchwise Prediction',
         "Portfolio Dashboard",
         "Credit Score Calculator",
         "EMI Calculator",
@@ -34,8 +36,11 @@ page = st.sidebar.selectbox(
 # -------------------------------
 # Routing
 # -------------------------------
-if page == "Risk Assessment":
+if page == "Risk Assessment (Single Borrower)":
     RiskAssessment()
+
+elif page == "Batchwise Prediction":
+    BatchWiseAssessment()
 
 elif page == "Portfolio Dashboard":
     PortfolioDashboard()
