@@ -19,11 +19,12 @@ An end-to-end Machine Learning + Business Intelligence system to predict Probabi
 
 🔹 Risk Prediction Interface
 
-"App Screenshot" (assets/app_ui.png)
+<img width="1892" height="907" alt="image" src="https://github.com/user-attachments/assets/a58efedd-6fde-4817-96b3-38420dc9abe4" />
 
 🔹 BI Dashboard
 
-"Dashboard Screenshot" (assets/dashboard.png)
+<img width="1902" height="905" alt="image" src="https://github.com/user-attachments/assets/0fd939d9-4389-4b74-a7f3-6720ec0c7272" />
+
 
 ---
 
