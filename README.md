@@ -1,5 +1,7 @@
 # 💳 Credit Risk Decision System
 
+I have designed and built a strong loan default risk decision and BI intelligence System. I have used Machine learning algorithms to identify and learn the patterns from the historical loan default data including income, debt-income-ratio, credit score, credit history, loan and financial details and deliquency data in order to estimate the probability of default (PD), improve the decision-making and mitigate highly risky borrowers to prevent financial revenue loss and damage to the reputations. Here I have predicted the probability and then used threshold tuning to classify borrowers as low default, medium and high default rate.
+
 "Python" (https://img.shields.io/badge/Python-3.10-blue)
 "ML" (https://img.shields.io/badge/Machine%20Learning-Scikit--learn-orange)
 "Deployment" (https://img.shields.io/badge/Deployed-Streamlit-green)
@@ -89,6 +91,14 @@ It combines ML predictions + business logic + portfolio insights.
 - ROC-AUC: 0.89
 - PR-AUC: 0.79
 - Recall: 79%
+  
+📈 Business Impact 
+
+The LightGBM model is the top-performing solution, delivering superior Precision-Recall Score and F1-score compared to other models. Most importantly, it achieves a recall rate of ~80%, meaning it successfully identifies 8 out of 10 defaulters.
+
+For example, in a portfolio of 100 new borrowers where 40 are actual defaulters, LightGBM correctly flags around 32 default cases. This translates into a 20% false negative rate, significantly reducing undetected defaulters compared to baseline models.
+
+From a financial perspective, this performance directly lowers expected losses. Assuming an average loss of ₹X per default, LightGBM reduces potential losses by 80% of the total default exposure. In other words, the model not only improves predictive accuracy but also reduces the financial loss rate by catching the majority of high-risk borrowers before loan disbursement.
 
 ---
 
