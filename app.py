@@ -15,7 +15,7 @@ from app_pages.page5 import ModelDashboard
 # -------------------------------
 # Page Config
 # -------------------------------
-st.set_page_config("Credit Risk Decision System", page_icon='🏦')
+st.set_page_config("Credit Risk Decision System", page_icon='🏦', layout='wide')
 
 # -------------------------------
 # Sidebar Navigation
