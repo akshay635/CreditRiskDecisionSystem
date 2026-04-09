@@ -17,6 +17,7 @@ def BatchwisePrediction():
     st.success('Data has been uploaded successfully')
   else:
     st.info('Please upload the file to proceed')
+    st.stop()
 
   df = pd.read_csv(uploaded_file)
   st.dataframe(df)
