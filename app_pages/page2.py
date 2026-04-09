@@ -6,6 +6,7 @@ import importlib
 import training.config as config
 importlib.reload(config)
 from inference.inference_data_validation import validate_input_data
+from core.model import load_model, predict_pd
 from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 def BatchwisePrediction():
@@ -41,3 +42,5 @@ def BatchwisePrediction():
 
   st.dataframe(new_df)
   actual = df[['LoanDefault']]
+
+  ml_model = load_model()
