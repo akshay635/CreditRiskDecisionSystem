@@ -30,11 +30,16 @@ def BatchwisePrediction():
 
   st.dataframe(df)
 
-  df['LoanIncomeRatio'] = round((df['LoanAmount'] / df['AnnualIncome']), 2)
-  df['InstallmentIncomeRatio'] = round((df['Installment'] / df['MonthlyIncome']), 2)
-  df['CreditUtilization'] = round((df['CurrentBalance'] / df['TotalCreditLimit']), 2)
+  target = 'LoanDefault'
 
-  valid_df = validate_input_data(df)
+  new_df = df.drop(columns=[target])
+  new_df = new_df[config.]
+
+  new_df['LoanIncomeRatio'] = round((df['LoanAmount'] / df['AnnualIncome']), 2)
+  new_df['InstallmentIncomeRatio'] = round((df['Installment'] / df['MonthlyIncome']), 2)
+  new_df['CreditUtilization'] = round((df['CurrentBalance'] / df['TotalCreditLimit']), 2)
+
+  valid_df = validate_input_data(new_df)
 
   if valid_df is not None:
     st.success('Data is valid')
