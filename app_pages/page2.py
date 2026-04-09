@@ -28,8 +28,6 @@ def BatchwisePrediction():
   # Apply to all column names
   df.columns = [to_pascal_case(col) for col in df.columns]
 
-  st.dataframe(df)
-
   df['LoanDefault'] = 1 - df['LoanPaidBack']
 
   target = 'LoanDefault'
@@ -41,10 +39,5 @@ def BatchwisePrediction():
   new_df['InstallmentIncomeRatio'] = round((df['Installment'] / df['MonthlyIncome']), 2)
   new_df['CreditUtilization'] = round((df['CurrentBalance'] / df['TotalCreditLimit']), 2)
 
-  valid_df = validate_input_data(new_df)
-
-  if valid_df is not None:
-    st.success('Data is valid')
-  else:
-    st.warning('Data is invalid')
+  st.dataframe(new_df)
     
