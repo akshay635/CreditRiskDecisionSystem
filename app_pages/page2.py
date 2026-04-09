@@ -1,4 +1,4 @@
-
+# Importing required libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -40,4 +40,4 @@ def BatchwisePrediction():
   new_df['CreditUtilization'] = round((df['CurrentBalance'] / df['TotalCreditLimit']), 2)
 
   st.dataframe(new_df)
-    
+  actual = df[['LoanDefault']]
