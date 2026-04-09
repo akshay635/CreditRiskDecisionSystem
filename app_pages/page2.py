@@ -5,7 +5,7 @@ import numpy as np
 import importlib
 import training.config as config
 importlib.reload(config)
-from inference.inference_data_validation import
+from inference.inference_data_validation import validate_input_data
 from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 def BatchwisePrediction():
@@ -24,4 +24,10 @@ def BatchwisePrediction():
   df['InstallmentIncomeRatio'] = round((df['Installment'] / df['MonthlyIncome']), 2)
   df['CreditUtilization'] = round((df['CurrentBalance'] / df['TotalCreditLimit']), 2)
 
+  valid_df = validate_input_data(df)
+
+  if valid_df is not None:
+    st.success('Data is valid')
+  else:
+    st.warning('Data is invalid')
     
