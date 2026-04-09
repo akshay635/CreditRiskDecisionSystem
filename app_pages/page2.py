@@ -9,3 +9,9 @@ from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_sco
 
 def BatchWiseAssessment():
   st.title("Batchwise Portfolio Risk Analysis")
+
+  uploaded_file = st.file_uploader("Upload a CSV file", type="csv")
+
+  df = pd.read_csv(uploaded_file)
+
+  st.DataFrame(df)
