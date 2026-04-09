@@ -17,4 +17,4 @@ def BatchwisePrediction():
     st.DataFrame(df)
 
   else:
-    st.error('Invalid file, data not found. Please reupload it')
+    st.info('Please upload the file to proceed')
