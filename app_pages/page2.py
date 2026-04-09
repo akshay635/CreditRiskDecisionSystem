@@ -22,7 +22,7 @@ def BatchwisePrediction():
   df = pd.read_csv(uploaded_file)
 
   # 3. Title case (first letter capitalized)
-  df.columns = df.columns.str.replace("_", "").str.title()
+  df.columns = df.columns.str.replace("_", "").str.capitalize()
 
   st.dataframe(df)
 
