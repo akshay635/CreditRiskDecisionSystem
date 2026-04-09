@@ -14,11 +14,12 @@ def BatchwisePrediction():
   uploaded_file = st.file_uploader("Upload a CSV file", type="csv")
 
   if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
-    st.dataframe(df)
-
+    st.success('Data has been uploaded successfully')
   else:
     st.info('Please upload the file to proceed')
+
+  df = pd.read_csv(uploaded_file)
+  st.dataframe(df)
 
   df['LoanIncomeRatio'] = round((df['LoanAmount'] / df['AnnualIncome']), 2)
   df['InstallmentIncomeRatio'] = round((df['Installment'] / df['MonthlyIncome']), 2)
