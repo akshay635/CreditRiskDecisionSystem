@@ -15,7 +15,7 @@ def BatchwisePrediction():
 
   if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
-    st.DataFrame(df)
+    st.dataframe(df)
 
   else:
     st.info('Please upload the file to proceed')
