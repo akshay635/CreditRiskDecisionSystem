@@ -5,6 +5,7 @@ import numpy as np
 import importlib
 import training.config as config
 importlib.reload(config)
+from inference.inference_data_validation import
 from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 def BatchwisePrediction():
@@ -18,3 +19,9 @@ def BatchwisePrediction():
 
   else:
     st.info('Please upload the file to proceed')
+
+  df['LoanIncomeRatio'] = round((df['LoanAmount'] / df['AnnualIncome']), 2)
+  df['InstallmentIncomeRatio'] = round((df['Installment'] / df['MonthlyIncome']), 2)
+  df['CreditUtilization'] = round((df['CurrentBalance'] / df['TotalCreditLimit']), 2)
+
+    
