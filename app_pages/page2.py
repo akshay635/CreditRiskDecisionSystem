@@ -21,8 +21,12 @@ def BatchwisePrediction():
 
   df = pd.read_csv(uploaded_file)
 
-  # 3. Title case (first letter capitalized)
-  df.columns = df.columns.str.replace("_", "").str.capitalize()
+  # Function to convert to PascalCase
+  def to_pascal_case(s):
+      return ''.join(word.capitalize() for word in s.replace('_', ' ').split())
+  
+  # Apply to all column names
+  df.columns = [to_pascal_case(col) for col in df.columns]
 
   st.dataframe(df)
 
