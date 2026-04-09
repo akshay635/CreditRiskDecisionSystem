@@ -8,6 +8,7 @@ importlib.reload(config)
 
 from app_pages.page1 import RiskAssessment
 from app_pages.page2 import BatchWiseAssessment
+importlib.reload(BatchWiseAssessment)
 from app_pages.page3 import PortfolioDashboard
 from app_pages.page4 import CreditScoreCalculator
 from app_pages.page5 import EMICalculator
