@@ -20,6 +20,10 @@ def BatchwisePrediction():
     st.stop()
 
   df = pd.read_csv(uploaded_file)
+
+  # 3. Title case (first letter capitalized)
+  df.columns = df.columns.str.replace("_", "").str.title()
+
   st.dataframe(df)
 
   df['LoanIncomeRatio'] = round((df['LoanAmount'] / df['AnnualIncome']), 2)
