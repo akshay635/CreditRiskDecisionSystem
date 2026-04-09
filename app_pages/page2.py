@@ -30,9 +30,11 @@ def BatchwisePrediction():
 
   st.dataframe(df)
 
+  df['LoanDefault'] = 1 - df['LoanPaidBack']
+
   target = 'LoanDefault'
 
-  new_df = df.drop(columns=[target])
+  new_df = df.drop(columns=[target, 'LoanPaidBack'])
   new_df = new_df[config.EXPECTED_FEATURES]
 
   new_df['LoanIncomeRatio'] = round((df['LoanAmount'] / df['AnnualIncome']), 2)
