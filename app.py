@@ -7,8 +7,7 @@ import training.config as config
 importlib.reload(config)
 
 from app_pages.page1 import RiskAssessment
-from app_pages.page2 import BatchWiseAssessment
-importlib.reload(BatchWiseAssessment)
+from app_pages.page2 import BatchwisePrediction
 from app_pages.page3 import PortfolioDashboard
 from app_pages.page4 import CreditScoreCalculator
 from app_pages.page5 import EMICalculator
@@ -41,7 +40,7 @@ if page == "Risk Assessment (Single Borrower)":
     RiskAssessment()
 
 elif page == "Batchwise Prediction":
-    BatchWiseAssessment()
+    BatchwisePrediction()
 
 elif page == "Portfolio Dashboard":
     PortfolioDashboard()
