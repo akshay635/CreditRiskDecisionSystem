@@ -12,6 +12,9 @@ def BatchwisePrediction():
 
   uploaded_file = st.file_uploader("Upload a CSV file", type="csv")
 
-  df = pd.read_csv(uploaded_file)
+  if uploaded_file:
+    df = pd.read_csv(uploaded_file)
+    st.DataFrame(df)
 
-  st.DataFrame(df)
+  else:
+    st.error('Invalid file, data not found. Please reupload it')
