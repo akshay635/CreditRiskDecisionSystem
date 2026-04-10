@@ -94,7 +94,7 @@ def BatchwisePrediction():
     st.markdown('---')
 
     new_df['LoanDefault'] = actual
-    new_df['Probabilities'] = probabilties
+    new_df['Probabilities'] = probabilities
     new_df['Predictions'] = predictions
     
     avg_loan_amount_d = new_df[new_df['LoanDefault'] == 1]['LoanAmount'].mean()
