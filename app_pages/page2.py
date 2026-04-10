@@ -117,7 +117,7 @@ def BatchwisePrediction():
 
     st.subheader("⬇️ Export Scored Portfolio")
 
-    st.download_button(label="Download Scored Dataset", data=df.to_csv(index=False), 
+    st.download_button(label="Download Scored Dataset", data=new_df.to_csv(index=False), 
                        file_name="scored_portfolio.csv", mime="text/csv")
 
     st.info(f"""At threshold {threshold}, the model detects {Recall*100:.2f}% of defaulters 
