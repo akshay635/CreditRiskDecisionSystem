@@ -44,7 +44,7 @@ def BatchwisePrediction():
   for col in cat_cols:
     new_df[col] = new_df[col].str.capitalize()
 
-  st.dataframe(new_df)
+  #st.dataframe(new_df)
   actual = df[[target]]
 
   threshold = st.slider('Threshold value', 0.1, 0.9, 0.05)
