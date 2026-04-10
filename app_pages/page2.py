@@ -64,7 +64,6 @@ def BatchwisePrediction():
     col2.metric("PR-AUC Score", round(pr_auc, 2), border=True)
     st.markdown("---")
 
-    st.markdown("---")
     st.container()
     col3, col4, col5, col6 = st.columns(4)
     predictions = (probabilities >= threshold).astype(int)
@@ -77,7 +76,18 @@ def BatchwisePrediction():
     col4.metric("Precision", round(Precision*100, 2), border=True)
     col5.metric("Recall", round(Recall*100, 2), border=True)
     col6.metric("F1", round(F1*100, 2), border=True)
-
+    
     tn, fp, fn, tp = confusion_matrix(actual, predictions).ravel()
 
     flagged_risk = predictions.mean()
+
+    st.markdown('---')
+    col7, col8, col9, col10 = st.columns(4)
+    col7.metric('True Negatives', tn, border=True)
+    col8.metric('False Negatives', fn, border=True)
+    col9.metric('False Positives', fp, border=True)
+    col10.metric('True Positives', tp, border=True)
+
+    st.markdown('---')
+
+    col11, col12, col13, col14 = st.columns(4)
