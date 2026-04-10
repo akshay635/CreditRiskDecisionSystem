@@ -78,4 +78,4 @@ def BatchwisePrediction():
     col5.metric("Recall", round(Recall, 2)*100, border=True)
     col6.metric("F1", round(F1, 2)*100, border=True)
 
-    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    tn, fp, fn, tp = confusion_matrix(actual, predictions).ravel()
