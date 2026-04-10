@@ -3,7 +3,13 @@
 DATA_PATH = "data/loan_dataset_20000.csv"
 MODEL_PATH = "models/final_ml_pipeline.joblib"
 
-FEATURES = ['LoanID', 'Age', 'Gender', 'MaritalStatus', 'EducationLevel', 'AnnualIncome',
+UI_FEATURES = ['LoanID', 'Age', 'Gender', 'MaritalStatus', 'EducationLevel', 'AnnualIncome',
+            'MonthlyIncome', 'EmploymentStatus', 'DebtToIncomeRatio','CreditScore', 
+            'LoanAmount', 'LoanPurpose', 'InterestRate','LoanTerm', 'Installment', 
+            'GradeSubgrade', 'NumOfOpenAccounts','TotalCreditLimit', 'CurrentBalance', 
+            'DelinquencyHistory', 'PublicRecords', 'NumOfDelinquencies', 'LoanPaidBack']
+
+BATCH_FEATURES = ['Age', 'Gender', 'MaritalStatus', 'EducationLevel', 'AnnualIncome',
             'MonthlyIncome', 'EmploymentStatus', 'DebtToIncomeRatio','CreditScore', 
             'LoanAmount', 'LoanPurpose', 'InterestRate','LoanTerm', 'Installment', 
             'GradeSubgrade', 'NumOfOpenAccounts','TotalCreditLimit', 'CurrentBalance', 
