@@ -99,7 +99,7 @@ def BatchwisePrediction():
     fp_cost = avg_loan_amount_nd * avg_interest
     fn_cost = avg_loan_amount_d + (avg_loan_amount_d*avg_interest)
     
-    col11, col12 = st.columns(4)
+    col11, col12 = st.columns(2)
     col11.metric('flagged_risk', round(flagged_risk*100, 2), border=True)
     col12.error('Expected_loss', f'{round(fp_cost + fn_cost)}/-', border=True)
     
