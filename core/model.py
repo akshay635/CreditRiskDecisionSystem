@@ -8,3 +8,6 @@ def load_model():
 
 def predict_pd(model, df):
     return model.predict_proba(df)[0][1]
+
+def predict_pd_batch(model, df):
+    return model.predict_proba(df)[:, 1]
