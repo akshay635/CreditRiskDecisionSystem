@@ -6,7 +6,7 @@ import importlib
 import training.config as config
 importlib.reload(config)
 from inference.inference_data_validation import validate_input_data
-from core.model import load_model, predict_pd
+from core.model import load_model, predict_pd_batch
 from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 def BatchwisePrediction():
@@ -50,7 +50,7 @@ def BatchwisePrediction():
   if st.button('Predict'):
     ml_model = load_model()
   
-    probabilities = predict_pd(ml_model, new_df)
+    probabilities = predict_pd_batch(ml_model, new_df)
   
     roc_auc = roc_auc_score(probabilities, actual)
     pr_auc = average_precision_score(probabilities, actual)
