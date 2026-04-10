@@ -33,7 +33,6 @@ def BatchwisePrediction():
     st.error('Invalid data. Features are missing in the data')
   st.stop()
   
-  
   df['LoanDefault'] = 1 - df['LoanPaidBack']
 
   target = 'LoanDefault'
