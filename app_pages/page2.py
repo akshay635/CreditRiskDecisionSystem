@@ -29,7 +29,7 @@ def BatchwisePrediction():
   # Apply to all column names
   df.columns = [to_pascal_case(col) for col in df.columns]
 
-  if set(df.columns) != set(config.FEATURES):
+  if set(df.columns) != set(config.BATCH_FEATURES):
     st.error("Invalid data. Features are missing.")
     st.stop()
   
