@@ -36,9 +36,9 @@ def BatchwisePrediction():
   new_df = df.drop(columns=[target, 'LoanPaidBack'])
   new_df = new_df[config.EXPECTED_FEATURES]
 
-  new_df['LoanIncomeRatio'] = round((df['LoanAmount'] / df['AnnualIncome']), 2)
-  new_df['InstallmentIncomeRatio'] = round((df['Installment'] / df['MonthlyIncome']), 2)
-  new_df['CreditUtilization'] = round((df['CurrentBalance'] / df['TotalCreditLimit']), 2)
+  new_df['LoanIncomeRatio'] = round((new_df['LoanAmount'] / new_df['AnnualIncome']), 2)
+  new_df['InstallmentIncomeRatio'] = round((new_df['Installment'] / new_df['MonthlyIncome']), 2)
+  new_df['CreditUtilization'] = round((new_df['CurrentBalance'] / new_df['TotalCreditLimit']), 2)
 
   cat_cols = new_df.select_dtypes(include='object').columns.tolist()
   for col in cat_cols:
@@ -72,10 +72,10 @@ def BatchwisePrediction():
     Recall = recall_score(actual, predictions)
     F1 = f1_score(actual, predictions)
 
-    col3.metric("Accuracy", round(Accuracy*100, 2), border=True)
-    col4.metric("Precision", round(Precision*100, 2), border=True)
-    col5.metric("Recall", round(Recall*100, 2), border=True)
-    col6.metric("F1", round(F1*100, 2), border=True)
+    col3.metric("Accuracy", f"{round(Accuracy*100, 2)}%", border=True)
+    col4.metric("Precision", f"{round(Precision*100, 2)}%", border=True)
+    col5.metric("Recall", f"{round(Recall*100, 2)}%", border=True)
+    col6.metric("F1", f"{round(F1*100, 2)}%", border=True)
     
     tn, fp, fn, tp = confusion_matrix(actual, predictions).ravel()
 
@@ -90,4 +90,15 @@ def BatchwisePrediction():
 
     st.markdown('---')
 
+    new_df['LoanDefault'] = actual
+    avg_loan_amount_d = new_df[new_df['LoanDefault'] == 1]['LoanAmount'].mean()
+    avg_loan_amount_nd = new_df[new_df['LoanDefault'] == 0]['LoanAmount'].mean()
+    avg_interest = (new_df['InterestRate'].mean())/100
+
+    fp_cost = avg_loan_amount_nd * avg_interest
+    fn_cost = avg_loan_amount_d + (avg_loan_amount_d*avg_interest)
+    
     col11, col12, col13, col14 = st.columns(4)
+    col11.metric('flagged_risk', round(flagged_risk*100, 2), border=True)
+    st.error('Expected_loss', f'{round(fp_cost + fn_cost)}/-'
+    
