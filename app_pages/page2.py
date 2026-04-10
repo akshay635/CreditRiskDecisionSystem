@@ -78,6 +78,7 @@ def BatchwisePrediction():
     col6.metric("F1", f"{round(F1*100, 2)}%", border=True)
     
     tn, fp, fn, tp = confusion_matrix(actual, predictions).ravel()
+    miss_rate = fn / (tp + fn)
 
     flagged_risk = predictions.mean()
 
@@ -93,6 +94,9 @@ def BatchwisePrediction():
     st.markdown('---')
 
     new_df['LoanDefault'] = actual
+    new_df['Probabilities'] = probabilties
+    new_df['Predictions'] = predictions
+    
     avg_loan_amount_d = new_df[new_df['LoanDefault'] == 1]['LoanAmount'].mean()
     avg_loan_amount_nd = new_df[new_df['LoanDefault'] == 0]['LoanAmount'].mean()
     avg_interest = (new_df['InterestRate'].mean())/100
@@ -103,4 +107,20 @@ def BatchwisePrediction():
     expected_loss = fp_cost*fp + fn_cost*fn
     
     st.error(f'Expected_loss: {round(expected_loss)}/-')
+
+    new_df["Risk Bucket"] = pd.cut(probabilities, bins=[0, 0.3, 0.6, 1],
+                                   labels=["Low Risk", "Medium Risk", "High Risk"])
+
+    st.subheader("📊 Risk Segmentation Distribution")
     
+    st.bar_chart(new_df["Risk Bucket"].value_counts())
+
+    st.subheader("⬇️ Export Scored Portfolio")
+
+    st.download_button(label="Download Scored Dataset", data=df.to_csv(index=False), 
+                       file_name="scored_portfolio.csv", mime="text/csv")
+
+    st.info(f"""At threshold {threshold}, the model detects {Recall*100:.2f}% of defaulters 
+    while missing {miss_rate*100:.2f}%. Approximately {flagged_risk*100:.2f}% 
+    of the portfolio is flagged for review.
+    """)
