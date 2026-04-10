@@ -29,14 +29,10 @@ def BatchwisePrediction():
   # Apply to all column names
   df.columns = [to_pascal_case(col) for col in df.columns]
 
-  columns = []
-
-  for col in df.columns:
-    if col not in config.FEATURES:
-      columns.append(col)
-
-  st.error(f'Invalid data. {columns} these features are missing')
+  if df.columns != config.FEATURES:
+    st.error('Invalid data. Features are missing in the data')
   st.stop()
+  
   
   df['LoanDefault'] = 1 - df['LoanPaidBack']
 
