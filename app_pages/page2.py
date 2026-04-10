@@ -45,15 +45,15 @@ def BatchwisePrediction():
     new_df[col] = new_df[col].str.capitalize()
 
   st.dataframe(new_df)
-  actual = df[['LoanDefault']]
+  actual = df[[target]]
 
   if st.button('Predict'):
     ml_model = load_model()
   
     probabilities = predict_pd_batch(ml_model, new_df)
   
-    roc_auc = roc_auc_score(probabilities[0], actual.values)
-    pr_auc = average_precision_score(probabilities[0], actual.values)
+    roc_auc = roc_auc_score(actual, probabilities)
+    pr_auc = average_precision_score(actual, probabilities)
   
     col1, col2 = st.columns(2)
     col1.metric("ROC-AUC Score", round(roc_auc, 2))
