@@ -73,9 +73,11 @@ def BatchwisePrediction():
     Recall = recall_score(actual, predictions)
     F1 = f1_score(actual, predictions)
 
-    col3.metric("Accuracy", round(Accuracy, 2)*100, border=True)
-    col4.metric("Precision", round(Precision, 2)*100, border=True)
-    col5.metric("Recall", round(Recall, 2)*100, border=True)
-    col6.metric("F1", round(F1, 2)*100, border=True)
+    col3.metric("Accuracy", round(Accuracy*100, 2), border=True)
+    col4.metric("Precision", round(Precision*100, 2), border=True)
+    col5.metric("Recall", round(Recall*100, 2), border=True)
+    col6.metric("F1", round(F1*100, 2), border=True)
 
     tn, fp, fn, tp = confusion_matrix(actual, predictions).ravel()
+
+    flagged_risk = predictions.mean()
