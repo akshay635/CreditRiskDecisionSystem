@@ -101,5 +101,5 @@ def BatchwisePrediction():
     
     col11, col12 = st.columns(4)
     col11.metric('flagged_risk', round(flagged_risk*100, 2), border=True)
-    col12.error('Expected_loss', f'{round(fp_cost + fn_cost)}/-'
+    col12.error('Expected_loss', f'{round(fp_cost + fn_cost)}/-', border=True)
     
