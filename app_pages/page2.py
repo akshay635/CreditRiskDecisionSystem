@@ -47,6 +47,8 @@ def BatchwisePrediction():
   st.dataframe(new_df)
   actual = df[[target]]
 
+  threshold = st.slider('Threshold value', 0.1, 0.9, 0.05)
+
   if st.button('Predict'):
     st.markdown("---")
     ml_model = load_model()
@@ -61,8 +63,6 @@ def BatchwisePrediction():
     col1.metric("ROC-AUC Score", round(roc_auc, 2), border=True)
     col2.metric("PR-AUC Score", round(pr_auc, 2), border=True)
     st.markdown("---")
-
-    threshold = st.slider('Threshold value', 0.1, 0.9, 0.05)
 
     st.markdown("---")
     st.container()
