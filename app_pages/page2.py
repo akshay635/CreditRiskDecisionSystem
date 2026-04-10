@@ -10,7 +10,7 @@ from core.model import load_model, predict_pd_batch
 from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 def BatchwisePrediction():
-  st.title("Batchwise Default Risk Analysis")
+  st.title("Batchwise Loan Default Risk Analysis")
 
   uploaded_file = st.file_uploader("Upload a CSV file", type="csv")
 
