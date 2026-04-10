@@ -48,6 +48,7 @@ def BatchwisePrediction():
   actual = df[[target]]
 
   if st.button('Predict'):
+    st.markdown("---")
     ml_model = load_model()
   
     probabilities = predict_pd_batch(ml_model, new_df)
