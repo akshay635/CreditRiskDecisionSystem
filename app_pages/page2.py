@@ -35,10 +35,6 @@ def BatchwisePrediction():
 
   df['LoanDefault'] = 1 - df['LoanPaidBack']
 
-  if df.columns != config.EXPECTED_FEATURES:
-    st.error('Invalid data passed. Please upload a valid data')
-    st.stop()
-
   target = 'LoanDefault'
 
   new_df = df.drop(columns=[target, 'LoanPaidBack'])
