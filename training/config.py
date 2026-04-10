@@ -7,7 +7,7 @@ FEATURES = ['LoanID', 'Age', 'Gender', 'MaritalStatus', 'EducationLevel', 'Annua
             'MonthlyIncome', 'EmploymentStatus', 'DebtToIncomeRatio','CreditScore', 
             'LoanAmount', 'LoanPurpose', 'InterestRate','LoanTerm', 'Installment', 
             'GradeSubgrade', 'NumOfOpenAccounts','TotalCreditLimit', 'CurrentBalance', 
-            'DelinquencyHistory', 'PublicRecords', 'NumOfDelinquencies', 'LoanDefault']
+            'DelinquencyHistory', 'PublicRecords', 'NumOfDelinquencies', 'LoanPaidBack']
 
 HIGH_COLINEARITY = ['DelinquencyHistory', 'GradeSubgrade']
 
