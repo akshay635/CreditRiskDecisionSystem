@@ -29,6 +29,10 @@ def BatchwisePrediction():
   # Apply to all column names
   df.columns = [to_pascal_case(col) for col in df.columns]
 
+  if df.columns != config.FEATURES:
+    st.error('Invalid data passed. Please upload a valid data')
+    st.stop()
+
   df['LoanDefault'] = 1 - df['LoanPaidBack']
 
   if df.columns != config.EXPECTED_FEATURES:
