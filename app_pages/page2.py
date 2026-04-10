@@ -99,6 +99,8 @@ def BatchwisePrediction():
 
     fp_cost = avg_loan_amount_nd * avg_interest
     fn_cost = avg_loan_amount_d + (avg_loan_amount_d*avg_interest)
+
+    expected_loss = fp_cost*fp + fn_cost*fn
     
-    st.error(f'Expected_loss: {round(fp_cost + fn_cost)}/-')
+    st.error(f'Expected_loss: {round(expected_loss)}/-')
     
