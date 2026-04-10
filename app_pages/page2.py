@@ -52,8 +52,8 @@ def BatchwisePrediction():
   
     probabilities = predict_pd_batch(ml_model, new_df)
   
-    roc_auc = roc_auc_score(probabilities.values, actual.values)
-    pr_auc = average_precision_score(probabilities.values, actual.values)
+    roc_auc = roc_auc_score(probabilities[0], actual.values)
+    pr_auc = average_precision_score(probabilities[0], actual.values)
   
     col1, col2 = st.columns(2)
     col1.metric("ROC-AUC Score", round(roc_auc, 2))
