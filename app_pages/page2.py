@@ -58,3 +58,10 @@ def BatchwisePrediction():
     col1, col2 = st.columns(2)
     col1.metric("ROC-AUC Score", round(roc_auc, 2))
     col2.metric("PR-AUC Score", round(pr_auc, 2))
+    st.markdown("---")
+
+    threshold = st.slider('Threshold value', 0.1, 0.9, 0.05)
+
+    st.markdown("---")
+    col3, col4, col5, col6 = st.columns(4)
+    predictions = (probabilities >= threshold).astype(int)
