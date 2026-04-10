@@ -83,11 +83,12 @@ def BatchwisePrediction():
 
     st.markdown('---')
     st.container()
-    col7, col8, col9, col10 = st.columns(4)
+    col7, col8, col9, col10, col11 = st.columns(5)
     col7.metric('True Negatives', tn, border=True)
     col8.metric('False Negatives', fn, border=True)
     col9.metric('False Positives', fp, border=True)
     col10.metric('True Positives', tp, border=True)
+    col11.metric('flagged_risk', round(flagged_risk*100, 2), border=True)
 
     st.markdown('---')
 
@@ -99,7 +100,5 @@ def BatchwisePrediction():
     fp_cost = avg_loan_amount_nd * avg_interest
     fn_cost = avg_loan_amount_d + (avg_loan_amount_d*avg_interest)
     
-    col11, col12 = st.columns(2)
-    col11.metric('flagged_risk', round(flagged_risk*100, 2), border=True)
     st.error('Expected_loss', f'{round(fp_cost + fn_cost)}/-')
     
