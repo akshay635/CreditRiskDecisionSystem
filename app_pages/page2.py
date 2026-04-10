@@ -58,8 +58,8 @@ def BatchwisePrediction():
 
     st.container()
     col1, col2 = st.columns(2)
-    col1.metric("ROC-AUC Score", round(roc_auc, 2))
-    col2.metric("PR-AUC Score", round(pr_auc, 2))
+    col1.metric("ROC-AUC Score", round(roc_auc, 2), border=True)
+    col2.metric("PR-AUC Score", round(pr_auc, 2), border=True)
     st.markdown("---")
 
     threshold = st.slider('Threshold value', 0.1, 0.9, 0.05)
@@ -68,3 +68,14 @@ def BatchwisePrediction():
     st.container()
     col3, col4, col5, col6 = st.columns(4)
     predictions = (probabilities >= threshold).astype(int)
+    Accuracy = accuracy_score(actual, predictions)
+    Precision = precision_score(actual, predictions)
+    Recall = recall_score(actual, predictions)
+    F1 = f1_score(actual, predictions)
+
+    col3.metric("Accuracy", round(Accuracy, 2)*100, border=True)
+    col4.metric("Precision", round(Precision, 2)*100, border=True)
+    col5.metric("Recall", round(Recall, 2)*100, border=True)
+    col6.metric("F1", round(F1, 2)*100, border=True)
+
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
