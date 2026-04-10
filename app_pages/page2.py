@@ -40,6 +40,10 @@ def BatchwisePrediction():
   new_df['InstallmentIncomeRatio'] = round((df['Installment'] / df['MonthlyIncome']), 2)
   new_df['CreditUtilization'] = round((df['CurrentBalance'] / df['TotalCreditLimit']), 2)
 
+  cat_cols = new_df.select_dtypes(include='object').columns.tolist()
+  for col in cat_cols:
+    new_df[col] = new_df[col].str.capitalize()
+
   st.dataframe(new_df)
   actual = df[['LoanDefault']]
 
