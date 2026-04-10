@@ -44,3 +44,12 @@ def BatchwisePrediction():
   actual = df[['LoanDefault']]
 
   ml_model = load_model()
+
+  probabilities = predict_pd(ml_model, new_df)
+
+  roc_auc = roc_auc_score(probabilities, actual)
+  pr_auc = average_precision_score(probabilities, actual)
+
+  col1, col2 = st.columns(2)
+  col1.metric("ROC-AUC Score", round(roc_auc, 2))
+  col2.metric("PR-AUC Score", round(pr_auc, 2))
