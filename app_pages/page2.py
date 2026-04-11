@@ -117,6 +117,8 @@ def BatchwisePrediction():
     col13.metric('Opportunity Cost', f"{round(opportunity_cost)}/-", delta_color='orange')
     col14.metric('NPAs (Non-Performing Assets)', f"{round(npas)}/-", delta_color='red')
 
+    st.markdown('---')
+
     new_df["Risk Bucket"] = pd.cut(probabilities, bins=[0, 0.3, 0.6, 1],
                                    labels=["Low Risk", "Medium Risk", "High Risk"])
 
