@@ -1,4 +1,4 @@
-# 💳 Credit Risk Decision System
+# 💳 Credit Risk Decision System for Loan Default Prediction and NPA reduction
 
 I have designed and built a strong loan default risk decision and BI intelligence System. I have used Machine learning algorithms to identify and learn the patterns from the historical loan default data including income, debt-income-ratio, credit score, credit history, loan and financial details and deliquency data in order to estimate the probability of default (PD), improve the decision-making and mitigate highly risky borrowers to prevent financial revenue loss and damage to the reputations. Here I have predicted the probability and then used threshold tuning to classify borrowers as low default, medium and high default rate.
 
