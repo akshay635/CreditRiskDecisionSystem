@@ -72,7 +72,7 @@ if page == 'Home':
     st.info("""
     1. Navigate to **Single Borrower Risk Estimation** for individual analysis  
     2. Use **Batchwise Risk Estimation** for portfolio-level insights  
-    3. Monitor model performance in **Monitoring section**
+    3. Monitor model performance in **Model Performance Metrics section**
     """)
     st.markdown('---')
     
