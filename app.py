@@ -16,7 +16,7 @@ from app_pages.page6 import ModelDashboard
 # -------------------------------
 # Page Config
 # -------------------------------
-st.set_page_config("Credit Risk Decision System", page_icon='🏦', layout='wide')
+st.set_page_config("Credit Risk App", page_icon='🏦', layout='wide')
 
 # -------------------------------
 # Sidebar Navigation
@@ -24,6 +24,7 @@ st.set_page_config("Credit Risk Decision System", page_icon='🏦', layout='wide
 page = st.sidebar.selectbox(
     "Select Page",
     [
+        'Home',
         "Risk Assessment (Single Borrower)",
         'Batchwise Prediction',
         "Portfolio Dashboard",
@@ -36,7 +37,12 @@ page = st.sidebar.selectbox(
 # -------------------------------
 # Routing
 # -------------------------------
-if page == "Risk Assessment (Single Borrower)":
+
+if page == 'Home':
+    st.title("Credit Risk Decision System for Loan Default Prediction and NPA Reduction", layout='wide')
+    st.markdown('---')
+    
+elif page == "Risk Assessment (Single Borrower)":
     RiskAssessment()
 
 elif page == "Batchwise Prediction":
