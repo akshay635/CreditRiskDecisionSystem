@@ -32,8 +32,25 @@ An end-to-end Machine Learning + Business Intelligence system to predict Probabi
 
 🎯 Problem Statement
 
-Financial institutions need reliable systems to identify high-risk borrowers and minimize losses.
-This project predicts default risk using borrower financial and behavioral data.
+Banks and NBFCs face rising NPAs (Non Performing Assets) due to irregular payments, borrower bankruptcies, poor creditworthiness, and financial distress. These defaults lead to significant financial and revenue losses for BFSI institutions.
+
+---
+
+Goal:
+
+Develop a machine learning system to estimate the probability of loan default using borrower personal, financial, loan, and credit data. Segment borrowers into risk tiers (low, medium, high) to enable proactive interventions and reduce NPAs.
+
+---
+
+Dataset Sources:
+
+•	Loan application records (demographics, employment, income).
+
+•	Credit bureau data (credit scores, repayment history).
+
+•	Loan transaction data (amount, tenure, EMI).
+
+•	Macroeconomic indicators (optional enrichment)
 
 ---
 
