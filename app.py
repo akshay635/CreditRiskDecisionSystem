@@ -25,8 +25,8 @@ page = st.sidebar.selectbox(
     "Select Page",
     [
         'Home',
-        "Single Borrower Risk Assessment",
-        'Batchwise Risk Assessment',
+        "Single Borrower Risk Estimation",
+        'Batchwise Risk Estimation',
         "Portfolio Dashboard",
         "Credit Score Calculator",
         "EMI Calculator",
@@ -70,8 +70,8 @@ if page == 'Home':
     
     st.subheader("⚙️ How to Use")
     st.info("""
-    1. Navigate to **Single Prediction** for individual analysis  
-    2. Use **Batch Prediction** for portfolio-level insights  
+    1. Navigate to **Single Borrower Risk Estimation** for individual analysis  
+    2. Use **Batchwise Risk Estimation** for portfolio-level insights  
     3. Monitor model performance in **Monitoring section**
     """)
     st.markdown('---')
