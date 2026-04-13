@@ -39,8 +39,13 @@ page = st.sidebar.selectbox(
 # -------------------------------
 
 if page == 'Home':
-    st.title("Credit Risk Decision System for Loan Default Prediction and NPA Reduction")
+    st.title("🏦 Credit Risk Decision System for Loan Default Prediction and NPA Reduction")
     st.markdown('---')
+
+    st.subheader("📌 Overview")
+    st.info("This application predicts the probability of loan default and helps identify high-risk borrowers to reduce financial loss.")
+    st.markdown('---')
+    #st.info('This app helps banks and nbfcs ')
     
 elif page == "Risk Assessment (Single Borrower)":
     RiskAssessment()
