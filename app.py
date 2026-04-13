@@ -25,8 +25,8 @@ page = st.sidebar.selectbox(
     "Select Page",
     [
         'Home',
-        "Risk Assessment (Single Borrower)",
-        'Batchwise Prediction',
+        "Single Borrower Risk Assessment",
+        'Batchwise Risk Assessment',
         "Portfolio Dashboard",
         "Credit Score Calculator",
         "EMI Calculator",
@@ -45,7 +45,36 @@ if page == 'Home':
     st.subheader("📌 Overview")
     st.info("This application predicts the probability of loan default and helps identify high-risk borrowers to reduce financial loss.")
     st.markdown('---')
-    #st.info('This app helps banks and nbfcs ')
+
+    st.subheader("🔍 Problem Statement")
+    st.info("""
+    Banks and NBFCs face increasing NPAs due to ineffective identification of high-risk borrowers.
+    """)
+    st.markdown('---')
+    
+    st.subheader("💡 Solution")
+    st.info("""
+    - Predicts probability of default (PD)
+    - Segments borrowers into risk categories (Low / Medium / High)
+    - Supports single and batch predictions
+    """)
+    st.markdown('---')
+    
+    st.subheader("💰 Business Impact")
+    st.info("""
+    - Reduces credit loss by identifying high-risk borrowers
+    - Controls opportunity cost from rejecting good borrowers
+    - Enables data-driven lending decisions
+    """)
+    st.markdown('---')
+    
+    st.subheader("⚙️ How to Use")
+    st.info("""
+    1. Navigate to **Single Prediction** for individual analysis  
+    2. Use **Batch Prediction** for portfolio-level insights  
+    3. Monitor model performance in **Monitoring section**
+    """)
+    st.markdown('---')
     
 elif page == "Risk Assessment (Single Borrower)":
     RiskAssessment()
