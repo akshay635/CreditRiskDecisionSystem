@@ -39,7 +39,7 @@ page = st.sidebar.selectbox(
 # -------------------------------
 
 if page == 'Home':
-    st.title("Credit Risk Decision System for Loan Default Prediction and NPA Reduction", layout='wide')
+    st.title("Credit Risk Decision System for Loan Default Prediction and NPA Reduction")
     st.markdown('---')
     
 elif page == "Risk Assessment (Single Borrower)":
