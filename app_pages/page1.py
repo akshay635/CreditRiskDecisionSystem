@@ -17,7 +17,7 @@ from inference.risk_category import GradeSubgrade
 
 
 def RiskAssessment():
-    st.title("🏦 Credit Risk Decision System")
+    st.title("🏦 Credit Risk Decision System for Single Borrower")
 
     # -------------------------------
     # Load Model
