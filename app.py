@@ -76,10 +76,10 @@ if page == 'Home':
     """)
     st.markdown('---')
     
-elif page == "Risk Assessment (Single Borrower)":
+elif page == "Single Borrower Risk Estimation":
     RiskAssessment()
 
-elif page == "Batchwise Prediction":
+elif page == "Batchwise Risk Estimation":
     BatchwisePrediction()
 
 elif page == "Portfolio Dashboard":
