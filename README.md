@@ -30,19 +30,19 @@ An end-to-end Machine Learning + Business Intelligence system to predict Probabi
 
 ---
 
-🎯 Problem Statement
+� Problem Statement
 
 Banks and NBFCs face rising NPAs (Non Performing Assets) due to irregular payments, borrower bankruptcies, poor creditworthiness, and financial distress. These defaults lead to significant financial and revenue losses for BFSI institutions.
 
 ---
 
-Goal:
+🎯 Goal:
 
 Develop a machine learning system to estimate the probability of loan default using borrower personal, financial, loan, and credit data. Segment borrowers into risk tiers (low, medium, high) to enable proactive interventions and reduce NPAs.
 
 ---
 
-Dataset Sources:
+💾 Dataset Sources:
 
 •	Loan application records (demographics, employment, income).
 
