@@ -4,7 +4,7 @@ An end-to-end Machine Learning + Business Intelligence system to predict Probabi
 
 ---
 
-🚀 Live Demo
+🚀 Live App
 
 🔗 https://creditriskdecisionsystem.streamlit.app
 
