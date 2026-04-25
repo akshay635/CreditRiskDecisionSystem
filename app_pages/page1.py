@@ -42,6 +42,8 @@ def RiskAssessment():
 
     low = st.slider("Lower Threshold", 0.0, 0.45, 0.30)
     high = st.slider("Higher Threshold", 0.45, 1.0, 0.60)
+    recovery_rate = st.slider('Recovery rate', 0.0, 1.0, 0.4)
+    
 
     if low >= high:
         st.error("Invalid threshold limits. ⚠️ Lower threshold must be less than higher threshold")
@@ -106,6 +108,17 @@ def RiskAssessment():
         • PD > Higher Threshold → High Risk (Reject)
         """)
 
+        LGD = (valid_df['CurrentBalance'] / valid_df['LoanAmount']) * (1 - recovery_rate)
+        EAD = valid_df['CurrentBalance'] + \
+            (valid_df['TotalCreditLimit'] - df['CurrentBalance']) * ccf
+
+        expected_loss = prob*LGD*EAD
+        
+        st.container()
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric('PD (Probability of Default)', f'{round(prob*100, 2)}%', border=True)
+        col2.metric('LGD (Loss Given Default)', f'{round(LGD*100, 2)}%', border=True)
         # -------------------------------
         # Explainability
         # -------------------------------
