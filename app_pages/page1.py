@@ -109,10 +109,10 @@ def RiskAssessment():
         • PD > Higher Threshold → High Risk (Reject)
         """)
 
-        LGD = (valid_df['CurrentBalance'].values / valid_df['LoanAmount'].values) * (1 - recovery_rate)
+        LGD = (valid_df['CurrentBalance'].iloc[0] / valid_df['LoanAmount'].iloc[0]) * (1 - recovery_rate)
         LGD = np.clip(LGD, 0, 1)
-        EAD = valid_df['CurrentBalance'].values + \
-            (valid_df['TotalCreditLimit'].values - valid_df['CurrentBalance'].values) * ccf
+        EAD = valid_df['CurrentBalance'].iloc[0] + \
+            (valid_df['TotalCreditLimit'].iloc[0] - valid_df['CurrentBalance'].iloc[0]) * ccf
 
         ExpectedLoss = prob*LGD*EAD
         
