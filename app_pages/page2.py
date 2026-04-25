@@ -52,6 +52,8 @@ def BatchwisePrediction():
   actual = df[[target]]
 
   threshold = st.slider('Threshold value', 0.1, 0.9, 0.05)
+  recovery_rate = st.slider("Recovery Rate", 0.0, 1.0, 0.4)
+  ccf = st.slider("CCF (Credit Conversion Factor)", 0.0, 1.0, 0.75)
 
   if st.button('Predict'):
     st.markdown("---")
@@ -111,10 +113,8 @@ def BatchwisePrediction():
     npas = fn*fn_cost
     opportunity_cost = fp*fp_cost
 
-    new_df['LGD'] = (new_df['CurrentBalance'] / new_df['LoanAmount']) * (1 - 0.4)
-    new_df['LGD'] = np.where(df['LoanAmount'] > 500000, 0.4, 0.6)
+    new_df['LGD'] = (new_df['CurrentBalance'] / new_df['LoanAmount']) * (1 - recovery_rate)
 
-    ccf = 0.75
     new_df['EAD'] = new_df['CurrentBalance'] + \
             (new_df['TotalCreditLimit'] - new_df['CurrentBalance']) * ccf
 
