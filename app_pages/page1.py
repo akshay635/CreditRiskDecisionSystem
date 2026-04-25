@@ -41,10 +41,15 @@ def RiskAssessment():
     # -------------------------------
     st.subheader("Setting up thresholds")
 
-    low = st.slider("Lower Threshold", 0.0, 0.45, 0.30)
-    high = st.slider("Higher Threshold", 0.45, 1.0, 0.60)
-    recovery_rate = st.slider('Recovery rate', 0.0, 1.0, 0.4)
-    ccf = st.slider('Credit Conversion Factor (CCF)', 0.0, 1.0, 0.75)
+    low = st.slider("Lower Threshold", 0, 45, 30)
+    high = st.slider("Higher Threshold", 45, 100, 60)
+    recovery_rate = st.slider('Recovery rate', 0, 100, 40)
+    ccf = st.slider('Credit Conversion Factor (CCF)', 0, 100, 75)
+
+    low = round(low/100, 2)
+    high = round(high/100, 2)
+    recovery_rate = round(recovery_rate/100, 2)
+    ccf = round(ccf/100, 2)
 
     if low >= high:
         st.error("Invalid threshold limits. ⚠️ Lower threshold must be less than higher threshold")
@@ -109,8 +114,7 @@ def RiskAssessment():
         • PD > Higher Threshold → High Risk (Reject)
         """)
 
-        LGD = (valid_df['CurrentBalance'].iloc[0] / (valid_df['LoanAmount'].iloc[0] + 1)) * (1 - recovery_rate)
-        LGD = np.clip(LGD, 0, 1)
+        LGD = 1 - recovery_rate
         EAD = valid_df['CurrentBalance'].iloc[0] + \
             (valid_df['TotalCreditLimit'].iloc[0] - valid_df['CurrentBalance'].iloc[0]) * ccf
 
