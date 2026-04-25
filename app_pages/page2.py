@@ -128,17 +128,17 @@ def BatchwisePrediction():
     total_el = new_df['ExpectedLoss'].sum()
 
     col12, col13 = st.columns(2)
-    col12.metric('Opportunity Cost', f"{round(opportunity_cost)}/-", delta_color='orange')
-    col13.metric('NPAs (Non-Performing Assets)', f"{round(npas)}/-", delta_color='red')
+    col12.metric('Opportunity Cost', f"{round(opportunity_cost)}/-", delta_color='orange', border=True)
+    col13.metric('NPAs (Non-Performing Assets)', f"{round(npas)}/-", delta_color='red', border=True)
 
     st.markdown('---')
     
     col14, col15, col16, col17, col18 = st.columns(5)
-    col14.metric(f'Avg PD (Probability of Default): {round(avg_pd*100, 2)}')
-    col15.metric(f'Avg LGD (Loss Given Default): {round(avg_lgd*100, 2)}')
-    col16.metric(f'Avg EAD (Exposure at Default): {round(avg_ead, 2)}')
-    col17.metric(f'Avg Expected Loss: {round(avg_el, 2)}')
-    col18.metric(f'Total Expected Loss: {round(total_el, 2)}')
+    col14.metric('Avg PD (Probability of Default):', f'{round(avg_pd*100, 2)}')
+    col15.metric('Avg LGD (Loss Given Default):', f'{round(avg_lgd*100, 2)}')
+    col16.metric('Avg EAD (Exposure at Default):', f'{round(avg_ead, 2)}')
+    col17.metric('Avg Expected Loss:', f'{round(avg_el, 2)}')
+    col18.metric('Total Expected Loss:', f'{round(total_el, 2)}')
 
     st.markdown('---')
 
