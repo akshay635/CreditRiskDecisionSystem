@@ -82,15 +82,15 @@ def RiskAssessment():
         # -------------------------------
         st.subheader("📊 Summary")
 
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3 = st.columns(3)
 
         col1.metric("Probability of Default (PD)", f"{prob:.2%}")
 
         delta = credit_score - valid_df["CreditScore"].iloc[0]
         col2.metric("Credit Score", credit_score, delta)
 
-        col3.metric("Expected Loss", f"₹{round(loss)}/-")
-        col4.metric("Grade", grade)
+        #col3.metric("Expected Loss", f"₹{round(loss)}/-")
+        col3.metric("Grade", grade)
 
         if prob <= low:
             st.success(decision)
@@ -109,16 +109,19 @@ def RiskAssessment():
         """)
 
         LGD = (valid_df['CurrentBalance'] / valid_df['LoanAmount']) * (1 - recovery_rate)
+        LGD = np.clip(LGD, 0, 1)
         EAD = valid_df['CurrentBalance'] + \
-            (valid_df['TotalCreditLimit'] - df['CurrentBalance']) * ccf
+            (valid_df['TotalCreditLimit'] - valid_df['CurrentBalance']) * ccf
 
         expected_loss = prob*LGD*EAD
         
         st.container()
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
 
         col1.metric('PD (Probability of Default)', f'{round(prob*100, 2)}%', border=True)
         col2.metric('LGD (Loss Given Default)', f'{round(LGD*100, 2)}%', border=True)
+        col3.metric('EAD (Exposure At Default)', f'{round(EAD)}/-', border=True)
+        col4.metric('Expected Loss', f'{round(expected_loss)}/-', border=True)
         # -------------------------------
         # Explainability
         # -------------------------------
