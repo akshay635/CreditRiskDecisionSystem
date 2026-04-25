@@ -55,6 +55,10 @@ def BatchwisePrediction():
   recovery_rate = st.slider("Recovery Rate", 0, 100, 40)
   ccf = st.slider("CCF (Credit Conversion Factor)", 0, 100, 75)
 
+  threshold = round(threshold/100, 2)
+  recovery_rate = round(recovery_rate/100, 2)
+  ccf = round(ccf/100, 2)
+
   if st.button('Predict'):
     st.markdown("---")
     ml_model = load_model()
