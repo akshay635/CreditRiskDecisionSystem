@@ -110,16 +110,39 @@ def BatchwisePrediction():
 
     npas = fn*fn_cost
     opportunity_cost = fp*fp_cost
-    total_expected_loss = fp_cost*fp + fn_cost*fn
+
+    new_df['LGD'] = (new_df['CurrentBalance'] / new_df['LoanAmount']) * (1 - 0.4)
+    new_df['LGD'] = np.where(df['LoanAmount'] > 500000, 0.4, 0.6)
+
+    ccf = 0.75
+    new_df['EAD'] = new_df['CurrentBalance'] + \
+            (new_df['TotalCreditLimit'] - new_df['CurrentBalance']) * ccf
+
+    new_df['ElRatio'] = new_df['Probabilities'] * new_df['LGD']
+    new_df['ExpectedLoss'] = df['ElRatio'] * df['EAD']
+
+    avg_pd = new_df['Probabilities'].mean()
+    avg_lgd = new_df['LGD'].mean()
+    avg_ead = new_df['EAD'].mean()
+    avg_el = new_df['ExpectedLoss'].mean()
+    total_el = new_df['ExpectedLoss'].sum()
+
+    col12, col13 = st.columns(2)
+    col12.metric('Opportunity Cost', f"{round(opportunity_cost)}/-", delta_color='orange')
+    col13.metric('NPAs (Non-Performing Assets)', f"{round(npas)}/-", delta_color='red')
+
+    st.markdown('---')
     
-    col12, col13, col14 = st.columns(3)
-    col12.metric('Total Expected Loss', f"{round(total_expected_loss)}/-", delta_color='yellow')
-    col13.metric('Opportunity Cost', f"{round(opportunity_cost)}/-", delta_color='orange')
-    col14.metric('NPAs (Non-Performing Assets)', f"{round(npas)}/-", delta_color='red')
+    col14, col15, col16, col17, col18 = st.columns(5)
+    col14.metric(f'Avg PD (Probability of Default): {round(avg_pd*100, 2)}')
+    col15.metric(f'Avg LGD (Loss Given Default): {round(avg_lgd*100, 2)}')
+    col16.metric(f'Avg EAD (Exposure at Default): {round(avg_ead, 2)}')
+    col17.metric(f'Avg Expected Loss: {round(avg_el, 2)}')
+    col18.metric(f'Total Expected Loss: {round(total_el, 2)}')
 
     st.markdown('---')
 
-    new_df["Risk Bucket"] = pd.cut(probabilities, bins=[0, 0.3, 0.6, 1],
+    new_df["Risk Bucket"] = pd.qcut(new_df['expected_loss'], q=3,
                                    labels=["Low Risk", "Medium Risk", "High Risk"])
 
     st.subheader("📊 Risk Segmentation Distribution")
