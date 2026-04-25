@@ -116,12 +116,12 @@ def RiskAssessment():
         expected_loss = prob*LGD*EAD
         
         st.container()
-        col1, col2, col3, col4 = st.columns(4)
+        col4, col5, col6, col7 = st.columns(4)
 
-        col1.metric('PD (Probability of Default)', f'{round(prob*100, 2)}%', border=True)
-        col2.metric('LGD (Loss Given Default)', f'{round(LGD*100, 2)}%', border=True)
-        col3.metric('EAD (Exposure At Default)', f'{round(EAD)}/-', border=True)
-        col4.metric('Expected Loss', f'{round(expected_loss)}/-', border=True)
+        col4.metric('PD (Probability of Default)', f'{round(prob*100, 2)}%', border=True)
+        col5.metric('LGD (Loss Given Default)', f'{round(LGD*100, 2)}%', border=True)
+        col6.metric('EAD (Exposure At Default)', f'{round(EAD)}/-', border=True)
+        col7.metric('Expected Loss', f'{round(expected_loss)}/-', border=True)
         # -------------------------------
         # Explainability
         # -------------------------------
