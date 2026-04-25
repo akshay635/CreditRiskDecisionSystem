@@ -40,6 +40,7 @@ page = st.sidebar.selectbox(
 
 if page == 'Home':
     st.title("🏦 Credit Risk Decision System for Loan Default Prediction and NPA Reduction")
+    st.info("👈 Click the arrow on the left to open the sidebar")
     st.markdown('---')
 
     st.subheader("📌 Overview")
