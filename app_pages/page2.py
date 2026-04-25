@@ -119,7 +119,7 @@ def BatchwisePrediction():
             (new_df['TotalCreditLimit'] - new_df['CurrentBalance']) * ccf
 
     new_df['ElRatio'] = new_df['Probabilities'] * new_df['LGD']
-    new_df['ExpectedLoss'] = df['ElRatio'] * df['EAD']
+    new_df['ExpectedLoss'] = new_df['ElRatio'] * new_df['EAD']
 
     avg_pd = new_df['Probabilities'].mean()
     avg_lgd = new_df['LGD'].mean()
