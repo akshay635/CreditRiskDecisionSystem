@@ -135,11 +135,11 @@ def BatchwisePrediction():
     st.markdown('---')
     st.container()
     col14, col15, col16, col17, col18 = st.columns(5)
-    col14.metric('Avg PD (Probability of Default):', f'{round(avg_pd*100, 2)}', border=True)
-    col15.metric('Avg LGD (Loss Given Default):', f'{round(avg_lgd*100, 2)}', border=True)
-    col16.metric('Avg EAD (Exposure at Default):', f'{round(avg_ead)}', border=True)
-    col17.metric('Avg Expected Loss:', f'{round(avg_el)}', border=True)
-    col18.metric('Total Expected Loss:', f'{round(total_el)}', border=True)
+    col14.metric('Avg PD (Probability of Default):', f'{round(avg_pd*100, 2)}%', border=True)
+    col15.metric('Avg LGD (Loss Given Default):', f'{round(avg_lgd*100, 2)}%', border=True)
+    col16.metric('Avg EAD (Exposure at Default):', f'{round(avg_ead)}/-', border=True)
+    col17.metric('Avg Expected Loss:', f'{round(avg_el)}/-', border=True)
+    col18.metric('Total Expected Loss:', f'{round(total_el)}/-', border=True)
 
     st.markdown('---')
 
