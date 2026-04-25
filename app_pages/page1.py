@@ -43,7 +43,7 @@ def RiskAssessment():
     low = st.slider("Lower Threshold", 0.0, 0.45, 0.30)
     high = st.slider("Higher Threshold", 0.45, 1.0, 0.60)
     recovery_rate = st.slider('Recovery rate', 0.0, 1.0, 0.4)
-    
+    ccf = st.slider('Credit Conversion Factor (CCF)', 0.0, 1.0, 0.75)
 
     if low >= high:
         st.error("Invalid threshold limits. ⚠️ Lower threshold must be less than higher threshold")
