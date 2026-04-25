@@ -133,7 +133,7 @@ def BatchwisePrediction():
     col13.metric('NPAs (Non-Performing Assets)', f"{round(npas)}/-", delta_color='red', border=True)
 
     st.markdown('---')
-    
+    st.container()
     col14, col15, col16, col17, col18 = st.columns(5)
     col14.metric('Avg PD (Probability of Default):', f'{round(avg_pd*100, 2)}', border=True)
     col15.metric('Avg LGD (Loss Given Default):', f'{round(avg_lgd*100, 2)}', border=True)
