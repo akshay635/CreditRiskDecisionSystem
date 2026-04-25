@@ -142,7 +142,7 @@ def BatchwisePrediction():
 
     st.markdown('---')
 
-    new_df["Risk Bucket"] = pd.qcut(new_df['ExpectedLoss'], q=3,
+    new_df["Risk Bucket"] = pd.qcut(new_df['Probabilities'], q=3,
                                    labels=["Low Risk", "Medium Risk", "High Risk"])
 
     st.subheader("📊 Risk Segmentation Distribution")
