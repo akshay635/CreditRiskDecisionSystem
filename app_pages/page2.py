@@ -113,7 +113,8 @@ def BatchwisePrediction():
     npas = fn*fn_cost
     opportunity_cost = fp*fp_cost
 
-    new_df['LGD'] = (new_df['CurrentBalance'] / new_df['LoanAmount']) * (1 - recovery_rate)
+    new_df['lgd'] = (new_df['outstanding_balance'] / (new_df['loan_amount'] + 1e-6)) * (1 - recovery_rate)
+    new_df['lgd'] = new_df['lgd'].clip(0, 1)
 
     new_df['EAD'] = new_df['CurrentBalance'] + \
             (new_df['TotalCreditLimit'] - new_df['CurrentBalance']) * ccf
