@@ -14,7 +14,7 @@ from core.business import calculate_lgd, expected_loss
 from core.explain import get_feature_importance
 from inference.user_data import load_user_data
 from inference.inference_data_validation import validate_input_data
-from inference.risk_category import GradeSubgrade
+from inference.risk_category import GradeSubgrade 
 
 
 def RiskAssessment():
