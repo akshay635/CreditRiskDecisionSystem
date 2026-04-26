@@ -139,42 +139,42 @@ def BatchwisePrediction():
         # -------------------------------
         # Display Metrics
         # -------------------------------
-        st.container()
-        col1, col2 = st.columns(2)
-        col1.metric("ROC-AUC", round(metrics["roc_auc"], 2))
-        col2.metric("PR-AUC", round(metrics["pr_auc"], 2))
+        with st.container(border=True)
+            col1, col2 = st.columns(2)
+            col1.metric("ROC-AUC", round(metrics["roc_auc"], 2))
+            col2.metric("PR-AUC", round(metrics["pr_auc"], 2))
 
         st.markdown("---")
-        st.container()
-        col3, col4, col5, col6 = st.columns(4)
-        col3.metric("Accuracy", f"{metrics['accuracy']*100:.2f}%")
-        col4.metric("Precision", f"{metrics['precision']*100:.2f}%")
-        col5.metric("Recall", f"{metrics['recall']*100:.2f}%")
-        col6.metric("F1", f"{metrics['f1']*100:.2f}%")
+        with st.container(border=True)
+            col3, col4, col5, col6 = st.columns(4)
+            col3.metric("Accuracy", f"{metrics['accuracy']*100:.2f}%")
+            col4.metric("Precision", f"{metrics['precision']*100:.2f}%")
+            col5.metric("Recall", f"{metrics['recall']*100:.2f}%")
+            col6.metric("F1", f"{metrics['f1']*100:.2f}%")
 
         tn, fp, fn, tp = business["conf"]
 
         st.markdown("---")
-        st.container()
-        col7, col8, col9, col10 = st.columns(4)
-        col7.metric("TN", tn)
-        col8.metric("FN", fn)
-        col9.metric("FP", fp)
-        col10.metric("TP", tp)
+        with st.container(border=True)
+            col7, col8, col9, col10 = st.columns(4)
+            col7.metric("TN", tn)
+            col8.metric("FN", fn)
+            col9.metric("FP", fp)
+            col10.metric("TP", tp)
 
         st.markdown("---")
-        st.container()
-        col11, col12 = st.columns(2)
-        col11.metric("Opportunity Cost", round(business["opportunity_cost"]))
-        col12.metric("NPAs", round(business["npas"]))
+        with st.container(border=True)
+            col11, col12 = st.columns(2)
+            col11.metric("Opportunity Cost", round(business["opportunity_cost"]))
+            col12.metric("NPAs", round(business["npas"]))
 
         st.markdown("---")
-        st.container()
-        col13, col14, col15, col16 = st.columns(4)
-        col13.metric("Avg PD", f"{business['avg_pd']*100:.2f}%")
-        col14.metric("Avg LGD", f"{business['avg_lgd']*100:.2f}%")
-        col15.metric("Avg EAD", round(business["avg_ead"]))
-        col16.metric("Total EL", round(business["total_el"]))
+        with st.container(border=True)
+            col13, col14, col15, col16 = st.columns(4)
+            col13.metric("Avg PD", f"{business['avg_pd']*100:.2f}%")
+            col14.metric("Avg LGD", f"{business['avg_lgd']*100:.2f}%")
+            col15.metric("Avg EAD", round(business["avg_ead"]))
+            col16.metric("Total EL", round(business["total_el"]))
 
         # -------------------------------
         # Risk Segmentation
