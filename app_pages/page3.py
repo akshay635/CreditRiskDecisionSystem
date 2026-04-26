@@ -109,17 +109,17 @@ def PortfolioDashboard():
     # Charts
     # -------------------------------
 
-    with st.container():
+    with st.container(border=True):
         col10, col11, col12 = st.columns(3)
         
         col10.subheader("Default by Employment")
-        col10.altair_chart(plot_bar(segments["employment"], "EmploymentStatus", "DefaultRate", "redyellowgreen"), border=True)
+        col10.altair_chart(plot_bar(segments["employment"], "EmploymentStatus", "DefaultRate", "redyellowgreen"))
     
         col11.subheader("Default by Credit Score")
-        col11.altair_chart(plot_bar(segments["credit"], "CreditScoreBucket", "DefaultRate", "redyellowblue"), border=True)
+        col11.altair_chart(plot_bar(segments["credit"], "CreditScoreBucket", "DefaultRate", "redyellowblue"))
     
         col12.subheader("Default by DTI")
-        col12.altair_chart(plot_bar(segments["dti"], "DTIBucket", "DefaultRate", "viridis"), border=True)
+        col12.altair_chart(plot_bar(segments["dti"], "DTIBucket", "DefaultRate", "viridis"))
 
     st.markdown("---")
 
@@ -127,16 +127,16 @@ def PortfolioDashboard():
     # Insights
     # -------------------------------
 
-    with st.container():
+    with st.container(border=True):
         col13, col14, col15 = st.columns(3)
         
         emp = get_top_risk_segment(segments["employment"], 'EmploymentStatus')
         credit = get_top_risk_segment(segments["credit"], 'CreditScoreBucket')
         dti = get_top_risk_segment(segments["dti"], 'DTIBucket')
     
-        col13.info(f"📌 Highest risk: {emp['EmploymentStatus']} ({emp['DefaultRate']:.0%})", border=True)
-        col14.info(f"📌 Highest risk: {credit['CreditScoreBucket']} ({credit['DefaultRate']:.0%})", border=True)
-        col15.info(f"📌 Highest risk: {dti['DTIBucket']} ({dti['DefaultRate']:.0%})", border=True)
+        col13.info(f"📌 Highest risk: {emp['EmploymentStatus']} ({emp['DefaultRate']:.0%})")
+        col14.info(f"📌 Highest risk: {credit['CreditScoreBucket']} ({credit['DefaultRate']:.0%})")
+        col15.info(f"📌 Highest risk: {dti['DTIBucket']} ({dti['DefaultRate']:.0%})")
 
     st.markdown("---")
 
@@ -144,7 +144,7 @@ def PortfolioDashboard():
     # Distribution Charts
     # -------------------------------
 
-    with st.container():
+    with st.container(border=True):
         col16, col17, col18 = st.columns(3)
     
         # Default Distribution
@@ -156,14 +156,14 @@ def PortfolioDashboard():
             hole=0.4
         )])
         col16.subheader("Default Distribution")
-        col16.plotly_chart(fig, border=True)
+        col16.plotly_chart(fig)
     
         # Loan Purpose
         fig2 = px.pie(df, names='LoanPurpose')
         col17.subheader("Loan Purpose Distribution")
-        col17.plotly_chart(fig2, border=True)
+        col17.plotly_chart(fig2)
     
         # Employment
         fig3 = px.pie(df, names='EmploymentStatus')
         col18.subheader("Employment Distribution")
-        col18.plotly_chart(fig3, border=True)
+        col18.plotly_chart(fig3)
