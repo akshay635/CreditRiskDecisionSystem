@@ -82,15 +82,16 @@ def PortfolioDashboard():
     # -------------------------------
     kpi = compute_kpis(df)
 
-    st.container()
     col1, col2, col3, col4 = st.columns(4)
+    st.container()
     col1.metric('Default Rate', f"{kpi['default_rate']*100:.1f}%")
     col2.metric('Median Annual Income', f"₹{kpi['med_annual_income']:.0f}")
     col3.metric('Median Monthly Income', f"₹{kpi['med_monthly_income']:.0f}")
     col4.metric('Avg Loan Amount', f"₹{kpi['avg_loan']:.0f}")
 
-    st.container()
+    
     col5, col6, col7, col8, col9 = st.columns(5)
+    st.container()
     col5.metric('Max Credit Score', kpi['max_score'])
     col6.metric('Min Credit Score', kpi['min_score'])
     col7.metric('Avg DTI', f"{kpi['avg_dti']*100:.1f}%")
@@ -108,9 +109,9 @@ def PortfolioDashboard():
     # -------------------------------
     # Charts
     # -------------------------------
-    st.container()
     col10, col11, col12 = st.columns(3)
-
+    st.container()
+    
     col10.subheader("Default by Employment")
     col10.altair_chart(plot_bar(segments["employment"], "EmploymentStatus", "DefaultRate", "redyellowgreen"))
 
@@ -125,9 +126,10 @@ def PortfolioDashboard():
     # -------------------------------
     # Insights
     # -------------------------------
-    st.container()
+    
     col13, col14, col15 = st.columns(3)
-
+    st.container()
+    
     emp = get_top_risk_segment(segments["employment"], 'EmploymentStatus')
     credit = get_top_risk_segment(segments["credit"], 'CreditScoreBucket')
     dti = get_top_risk_segment(segments["dti"], 'DTIBucket')
@@ -141,8 +143,8 @@ def PortfolioDashboard():
     # -------------------------------
     # Distribution Charts
     # -------------------------------
-    st.container()
     col16, col17, col18 = st.columns(3)
+    st.container()
 
     # Default Distribution
     default_dist = df['LoanDefault'].value_counts(normalize=True) * 100
