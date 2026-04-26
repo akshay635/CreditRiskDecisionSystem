@@ -82,21 +82,20 @@ def PortfolioDashboard():
     # -------------------------------
     kpi = compute_kpis(df)
 
-    col1, col2, col3, col4 = st.columns(4)
-    st.container()
-    col1.metric('Default Rate', f"{kpi['default_rate']*100:.1f}%")
-    col2.metric('Median Annual Income', f"₹{kpi['med_annual_income']:.0f}")
-    col3.metric('Median Monthly Income', f"₹{kpi['med_monthly_income']:.0f}")
-    col4.metric('Avg Loan Amount', f"₹{kpi['avg_loan']:.0f}")
+    with st.container(border=True):
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric('Default Rate', f"{kpi['default_rate']*100:.1f}%")
+        col2.metric('Median Annual Income', f"₹{kpi['med_annual_income']:.0f}")
+        col3.metric('Median Monthly Income', f"₹{kpi['med_monthly_income']:.0f}")
+        col4.metric('Avg Loan Amount', f"₹{kpi['avg_loan']:.0f}")
 
-    
-    col5, col6, col7, col8, col9 = st.columns(5)
-    st.container()
-    col5.metric('Max Credit Score', kpi['max_score'])
-    col6.metric('Min Credit Score', kpi['min_score'])
-    col7.metric('Avg DTI', f"{kpi['avg_dti']*100:.1f}%")
-    col8.metric('Max Accounts', kpi['max_accounts'])
-    col9.metric('Avg Delinquencies', int(np.ceil(kpi['avg_delinquencies'])))
+    with st.container(border=True):
+        col5, col6, col7, col8, col9 = st.columns(5)
+        col5.metric('Max Credit Score', kpi['max_score'])
+        col6.metric('Min Credit Score', kpi['min_score'])
+        col7.metric('Avg DTI', f"{kpi['avg_dti']*100:.1f}%")
+        col8.metric('Max Accounts', kpi['max_accounts'])
+        col9.metric('Avg Delinquencies', int(np.ceil(kpi['avg_delinquencies'])))
 
     st.markdown("---")
 
@@ -109,60 +108,62 @@ def PortfolioDashboard():
     # -------------------------------
     # Charts
     # -------------------------------
-    col10, col11, col12 = st.columns(3)
-    st.container()
+
+    with st.container(border=True):
+        col10, col11, col12 = st.columns(3)
+        
+        col10.subheader("Default by Employment")
+        col10.altair_chart(plot_bar(segments["employment"], "EmploymentStatus", "DefaultRate", "redyellowgreen"))
     
-    col10.subheader("Default by Employment")
-    col10.altair_chart(plot_bar(segments["employment"], "EmploymentStatus", "DefaultRate", "redyellowgreen"))
-
-    col11.subheader("Default by Credit Score")
-    col11.altair_chart(plot_bar(segments["credit"], "CreditScoreBucket", "DefaultRate", "redyellowblue"))
-
-    col12.subheader("Default by DTI")
-    col12.altair_chart(plot_bar(segments["dti"], "DTIBucket", "DefaultRate", "viridis"))
+        col11.subheader("Default by Credit Score")
+        col11.altair_chart(plot_bar(segments["credit"], "CreditScoreBucket", "DefaultRate", "redyellowblue"))
+    
+        col12.subheader("Default by DTI")
+        col12.altair_chart(plot_bar(segments["dti"], "DTIBucket", "DefaultRate", "viridis"))
 
     st.markdown("---")
 
     # -------------------------------
     # Insights
     # -------------------------------
-    
-    col13, col14, col15 = st.columns(3)
-    st.container()
-    
-    emp = get_top_risk_segment(segments["employment"], 'EmploymentStatus')
-    credit = get_top_risk_segment(segments["credit"], 'CreditScoreBucket')
-    dti = get_top_risk_segment(segments["dti"], 'DTIBucket')
 
-    col13.info(f"📌 Highest risk: {emp['EmploymentStatus']} ({emp['DefaultRate']:.0%})")
-    col14.info(f"📌 Highest risk: {credit['CreditScoreBucket']} ({credit['DefaultRate']:.0%})")
-    col15.info(f"📌 Highest risk: {dti['DTIBucket']} ({dti['DefaultRate']:.0%})")
+    with st.container(border=True):
+        col13, col14, col15 = st.columns(3)
+        
+        emp = get_top_risk_segment(segments["employment"], 'EmploymentStatus')
+        credit = get_top_risk_segment(segments["credit"], 'CreditScoreBucket')
+        dti = get_top_risk_segment(segments["dti"], 'DTIBucket')
+    
+        col13.info(f"📌 Highest risk: {emp['EmploymentStatus']} ({emp['DefaultRate']:.0%})")
+        col14.info(f"📌 Highest risk: {credit['CreditScoreBucket']} ({credit['DefaultRate']:.0%})")
+        col15.info(f"📌 Highest risk: {dti['DTIBucket']} ({dti['DefaultRate']:.0%})")
 
     st.markdown("---")
 
     # -------------------------------
     # Distribution Charts
     # -------------------------------
-    col16, col17, col18 = st.columns(3)
-    st.container()
 
-    # Default Distribution
-    default_dist = df['LoanDefault'].value_counts(normalize=True) * 100
-
-    fig = go.Figure(data=[go.Pie(
-        labels=default_dist.index,
-        values=default_dist.values,
-        hole=0.4
-    )])
-    col16.subheader("Default Distribution")
-    col16.plotly_chart(fig)
-
-    # Loan Purpose
-    fig2 = px.pie(df, names='LoanPurpose')
-    col17.subheader("Loan Purpose Distribution")
-    col17.plotly_chart(fig2)
-
-    # Employment
-    fig3 = px.pie(df, names='EmploymentStatus')
-    col18.subheader("Employment Distribution")
-    col18.plotly_chart(fig3)
+    with st.container(border=True):
+        col16, col17, col18 = st.columns(3)
+    
+        # Default Distribution
+        default_dist = df['LoanDefault'].value_counts(normalize=True) * 100
+    
+        fig = go.Figure(data=[go.Pie(
+            labels=default_dist.index,
+            values=default_dist.values,
+            hole=0.4
+        )])
+        col16.subheader("Default Distribution")
+        col16.plotly_chart(fig)
+    
+        # Loan Purpose
+        fig2 = px.pie(df, names='LoanPurpose')
+        col17.subheader("Loan Purpose Distribution")
+        col17.plotly_chart(fig2)
+    
+        # Employment
+        fig3 = px.pie(df, names='EmploymentStatus')
+        col18.subheader("Employment Distribution")
+        col18.plotly_chart(fig3)
