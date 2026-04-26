@@ -1,146 +1,154 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import importlib
 import training.config as config
 
-# Reload config (keep as-is for safety)
+# Reload config
 importlib.reload(config)
 
 from core.model import load_model, predict_pd
 from core.scoring import calculate_scores, get_risk_level
 from core.decision import get_decision
-from core.business import calculate_lgd, expected_loss
+from core.business import calculate_lgd
 from core.explain import get_feature_importance
 from inference.user_data import load_user_data
 from inference.inference_data_validation import validate_input_data
-from inference.risk_category import GradeSubgrade 
+from inference.risk_category import GradeSubgrade
 
+# -------------------------------
+# Helper Functions
+# -------------------------------
+
+def get_thresholds():
+    st.subheader("⚙️ Threshold Settings")
+
+    low = st.slider("Lower Threshold", 0, 45, 30) / 100
+    high = st.slider("Higher Threshold", 45, 100, 60) / 100
+    recovery_rate = st.slider("Recovery Rate", 0, 100, 40) / 100
+    ccf = st.slider("Credit Conversion Factor (CCF)", 0, 100, 75) / 100
+
+    if low >= high:
+        st.error("⚠️ Lower threshold must be less than higher threshold")
+        st.stop()
+
+    return round(low, 2), round(high, 2), round(recovery_rate, 2), round(ccf, 2)
+
+
+def compute_ead(balance, limit, ccf):
+    return balance + (limit - balance) * ccf
+
+
+def compute_expected_loss(pd, lgd, ead):
+    return pd * lgd * ead
+
+
+def display_summary(prob, credit_score, original_score, grade):
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("PD", f"{prob:.2%}")
+
+    delta = credit_score - original_score
+    col2.metric("Credit Score", credit_score, delta)
+
+    col3.metric("Grade", grade)
+
+
+def display_risk_decision(prob, low, high, decision):
+    if prob <= low:
+        st.success(decision)
+    elif prob <= high:
+        st.warning(decision)
+    else:
+        st.error(decision)
+
+
+def display_risk_metrics(pd, lgd, ead, el):
+    col1, col2, col3, col4 = st.columns(4)
+
+    col1.metric("PD", f"{pd*100:.2f}%")
+    col2.metric("LGD", f"{lgd*100:.2f}%")
+    col3.metric("EAD", f"₹{round(ead)}")
+    col4.metric("Expected Loss", f"₹{round(el)}")
+
+
+def display_explainability(model):
+    features_df = get_feature_importance(model)
+
+    with st.expander("🔍 Key Drivers"):
+        st.caption("Feature importance shows relative contribution (not causation).")
+        st.table(features_df.head())
+
+        st.bar_chart(features_df.head().set_index("Cleaned_Features"))
+
+        top_features = features_df['Cleaned_Features'].head(3).tolist()
+        st.info(f"{', '.join(top_features)} are the top influencing features.")
+
+
+# -------------------------------
+# Main App
+# -------------------------------
 
 def RiskAssessment():
-    st.title("🏦 Loan Default Risk Decision System for Single Borrower")
-    
-    # -------------------------------
-    # Load Model
-    # -------------------------------
+    st.title("🏦 Loan Default Risk Decision System")
+
+    # Load model
     model = load_model()
 
-    # -------------------------------
-    # User Input & Validation
-    # -------------------------------
+    # Load & validate input
     user_inputs = load_user_data()
     df = pd.DataFrame([user_inputs])
     valid_df = validate_input_data(df)
 
     if valid_df.empty:
-        st.error("⚠️ Invalid input data. Please check inputs.")
+        st.error("⚠️ Invalid input data")
         st.stop()
 
-    # -------------------------------
-    # Threshold Settings
-    # -------------------------------
-    st.subheader("Setting up thresholds")
-
-    low = st.slider("Lower Threshold", 0, 45, 30)
-    high = st.slider("Higher Threshold", 45, 100, 60)
-    recovery_rate = st.slider('Recovery rate', 0, 100, 40)
-    ccf = st.slider('Credit Conversion Factor (CCF)', 0, 100, 75)
-
-    low = round(low/100, 2)
-    high = round(high/100, 2)
-    recovery_rate = round(recovery_rate/100, 2)
-    ccf = round(ccf/100, 2)
-
-    if low >= high:
-        st.error("Invalid threshold limits. ⚠️ Lower threshold must be less than higher threshold")
-        st.stop()
+    # Thresholds
+    low, high, recovery_rate, ccf = get_thresholds()
 
     loan_amount = valid_df['LoanAmount'].iloc[0]
-
     if loan_amount <= 0:
         st.error("⚠️ Loan amount must be greater than 0")
         st.stop()
-    # -------------------------------
-    # Prediction Trigger
-    # -------------------------------
+
+    # Predict
     if st.button("Predict"):
 
-        # ---- Prediction ----
+        # --- Prediction ---
         prob = predict_pd(model, valid_df)
 
-        # ---- Scoring ----
+        # --- Scores ---
         risk_score, credit_score = calculate_scores(prob)
         grade = GradeSubgrade(credit_score)
         risk_level = get_risk_level(grade)
 
-        # ---- Decision ----
+        # --- Decision ---
         decision = get_decision(prob, low, high)
 
-        # ---- Business Metrics ----
-        loan_purpose = valid_df["LoanPurpose"].iloc[0]
-        loan_amount = valid_df["LoanAmount"].iloc[0]
+        # --- LGD & EAD ---
+        lgd = 1 - recovery_rate
 
-        lgd = calculate_lgd(loan_purpose)
-        loss = expected_loss(prob, loan_amount, lgd)
+        balance = valid_df['CurrentBalance'].iloc[0]
+        limit = valid_df['TotalCreditLimit'].iloc[0]
+        ead = compute_ead(balance, limit, ccf)
 
-        # -------------------------------
-        # UI: Summary
-        # -------------------------------
+        el = compute_expected_loss(prob, lgd, ead)
+
+        # --- UI ---
         st.subheader("📊 Summary")
+        display_summary(prob, credit_score, valid_df["CreditScore"].iloc[0], grade)
 
-        col1, col2, col3 = st.columns(3)
+        display_risk_decision(prob, low, high, decision)
 
-        col1.metric("Probability of Default (PD)", f"{prob:.2%}")
-
-        delta = credit_score - valid_df["CreditScore"].iloc[0]
-        col2.metric("Credit Score", credit_score, delta)
-
-        #col3.metric("Expected Loss", f"₹{round(loss)}/-")
-        col3.metric("Grade", grade)
-
-        if prob <= low:
-            st.success(decision)
-        elif low < prob <= high:
-            st.warning(decision)
-        else:
-            st.error(decision)
-            
         st.metric("Risk Level", risk_level)
 
         st.info("""
-        Decision is based on Probability of Default (PD):\n
-        • PD < Lower Threshold → Low Risk (Approve)\n
-        • PD between thresholds → Medium Risk (Review)\n
-        • PD > Higher Threshold → High Risk (Reject)
+        Decision Logic:
+        • PD < Lower Threshold → Approve  
+        • PD between thresholds → Review  
+        • PD > Higher Threshold → Reject
         """)
 
-        LGD = 1 - recovery_rate
-        EAD = valid_df['CurrentBalance'].iloc[0] + \
-            (valid_df['TotalCreditLimit'].iloc[0] - valid_df['CurrentBalance'].iloc[0]) * ccf
+        display_risk_metrics(prob, lgd, ead, el)
 
-        ExpectedLoss = prob*LGD*EAD
-        
-        st.container()
-        col4, col5, col6, col7 = st.columns(4)
-
-        col4.metric('PD (Probability of Default)', f'{round(prob*100, 2)}%', border=True)
-        col5.metric('LGD (Loss Given Default)', f'{round(LGD*100, 2)}%', border=True)
-        col6.metric('EAD (Exposure At Default)', f'{round(EAD)}/-', border=True)
-        col7.metric('Expected Loss', f'{round(ExpectedLoss)}/-', border=True)
-        # -------------------------------
-        # Explainability
-        # -------------------------------
-        features_df = get_feature_importance(model)
-
-        with st.expander("Key drivers of the outcome"):
-            st.caption("Feature importance shows relative contribution to prediction (not causation).")
-            st.table(features_df.head())
-
-            st.bar_chart(
-                features_df.head().set_index("Cleaned_Features")
-            )
-
-            top_1 = features_df['Cleaned_Features'].iloc[0]
-            top_2 = features_df['Cleaned_Features'].iloc[1]
-            top_3 = features_df['Cleaned_Features'].iloc[2]
-            st.info(f"{top_1}, {top_2} and {top_3} are the key features which are influencing the final outcome.")
+        display_explainability(model)
