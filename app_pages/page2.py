@@ -82,6 +82,7 @@ def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
     df['EAD'] = df['CurrentBalance'] + (df['TotalCreditLimit'] - df['CurrentBalance']) * ccf
 
     df['ExpectedLoss'] = df['Probabilities'] * df['LGD'] * df['EAD']
+    weighted_pd = (df['Probabilities']*df['EAD'])/(df['EAD'].sum())                                             
 
     # Cost calculation
     avg_loan_d = df[df['LoanDefault'] == 1]['LoanAmount'].mean()
@@ -97,6 +98,7 @@ def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
         "df": df,
         "npas": fn * fn_cost,
         "opportunity_cost": fp * fp_cost,
+        "weighted_pd": weighted_pd
         "avg_pd": df['Probabilities'].mean(),
         "avg_lgd": df['LGD'].mean(),
         "avg_ead": df['EAD'].mean(),
@@ -170,11 +172,12 @@ def BatchwisePrediction():
 
         st.markdown("---")
         with st.container():
-            col13, col14, col15, col16 = st.columns(4)
-            col13.metric("Avg PD", f"{business['avg_pd']*100:.2f}%", border=True)
-            col14.metric("Avg LGD", f"{business['avg_lgd']*100:.2f}%", border=True)
-            col15.metric("Avg EAD", round(business["avg_ead"]), border=True)
-            col16.metric("Total EL", round(business["total_el"]), border=True)
+            col13, col14, col15, col16, col17 = st.columns(5)
+            col13.metric("Weighted PD", f"{business['weighted_pd']*100:.2f}%", border=True)
+            col14.metric("Avg PD", f"{business['avg_pd']*100:.2f}%", border=True)
+            col15.metric("Avg LGD", f"{business['avg_lgd']*100:.2f}%", border=True)
+            col16.metric("Avg EAD", round(business["avg_ead"]), border=True)
+            col17.metric("Total EL", round(business["total_el"]), border=True)
 
         # -------------------------------
         # Risk Segmentation
