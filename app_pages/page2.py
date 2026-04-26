@@ -82,7 +82,7 @@ def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
     df['EAD'] = df['CurrentBalance'] + (df['TotalCreditLimit'] - df['CurrentBalance']) * ccf
 
     df['ExpectedLoss'] = df['Probabilities'] * df['LGD'] * df['EAD']
-    weighted_pd = (probs*df['EAD'])/(df['EAD'].sum())                                             
+    df['WeightedPD'] = (probs*df['EAD'])/(df['EAD'].sum())                                             
 
     # Cost calculation
     avg_loan_d = df[df['LoanDefault'] == 1]['LoanAmount'].mean()
@@ -98,7 +98,7 @@ def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
         "df": df,
         "npas": fn * fn_cost,
         "opportunity_cost": fp * fp_cost,
-        "weighted_pd": weighted_pd,
+        "weighted_pd": df['WeightedPD'].mean(),
         "avg_pd": df['Probabilities'].mean(),
         "avg_lgd": df['LGD'].mean(),
         "avg_ead": df['EAD'].mean(),
