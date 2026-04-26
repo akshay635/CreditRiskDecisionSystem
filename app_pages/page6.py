@@ -40,16 +40,17 @@ def ModelDashboard():
     # -------------------------------
     st.subheader("Final Model Performance on Test Dataset")
 
-    col1, col2, col3 = st.columns(3)
-    col4, col5, col6 = st.columns(3)
-
-    col1.metric("ROC-AUC", f"{metrics['ROC-AUC'].iloc[0]:.2f}")
-    col2.metric("PR-AUC ⭐", f"{metrics['PR-AUC'].iloc[0]:.2f}")
-    col3.metric("Accuracy", f"{metrics['Accuracy'].iloc[0]:.2%}")
-
-    col4.metric("Precision", f"{metrics['Precision'].iloc[0]:.2%}")
-    col5.metric("Recall", f"{metrics['Recall'].iloc[0]:.2%}")
-    col6.metric("F1 Score", f"{metrics['F1'].iloc[0]:.2%}")
+    with st.container():
+        col1, col2, col3 = st.columns(3)
+        col4, col5, col6 = st.columns(3)
+    
+        col1.metric("ROC-AUC", f"{metrics['ROC-AUC'].iloc[0]:.2f}", border=True)
+        col2.metric("PR-AUC ⭐", f"{metrics['PR-AUC'].iloc[0]:.2f}", border=True)
+        col3.metric("Accuracy", f"{metrics['Accuracy'].iloc[0]:.2%}", border=True)
+    
+        col4.metric("Precision", f"{metrics['Precision'].iloc[0]:.2%}", border=True)
+        col5.metric("Recall", f"{metrics['Recall'].iloc[0]:.2%}", border=True)
+        col6.metric("F1 Score", f"{metrics['F1'].iloc[0]:.2%}", border=True)
 
     # ------------------------------
     # Confusion Matrix
