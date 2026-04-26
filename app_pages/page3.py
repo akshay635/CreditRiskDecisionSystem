@@ -83,6 +83,7 @@ def PortfolioDashboard():
     # -------------------------------
     kpi = compute_kpis(df)
 
+    st.container()
     col1, col2, col3, col4 = st.columns(4)
     col1.metric('Default Rate', f"{kpi['default_rate']*100:.1f}%")
     col2.metric('Median Annual Income', f"₹{kpi['med_annual_income']:.0f}")
