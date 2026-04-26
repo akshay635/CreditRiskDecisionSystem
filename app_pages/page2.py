@@ -1,164 +1,196 @@
-# Importing required libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
 import importlib
 import training.config as config
+
 importlib.reload(config)
-from inference.inference_data_validation import validate_input_data
+
 from core.model import load_model, predict_pd_batch
-from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import (
+    roc_auc_score, average_precision_score,
+    accuracy_score, precision_score, recall_score,
+    f1_score, confusion_matrix
+)
+
+# -------------------------------
+# Helper Functions
+# -------------------------------
+
+def to_pascal_case(s):
+    return ''.join(word.capitalize() for word in s.replace('_', ' ').split())
+
+
+def preprocess_data(df):
+    df.columns = [to_pascal_case(col) for col in df.columns]
+
+    if set(df.columns) != set(config.BATCH_FEATURES):
+        st.error("Invalid data. Features are missing.")
+        st.stop()
+
+    df['LoanDefault'] = 1 - df['LoanPaidBack']
+
+    new_df = df.drop(columns=['LoanDefault', 'LoanPaidBack'])
+    new_df = new_df[config.EXPECTED_FEATURES]
+
+    # Feature Engineering
+    new_df['LoanIncomeRatio'] = new_df['LoanAmount'] / new_df['AnnualIncome']
+    new_df['InstallmentIncomeRatio'] = new_df['Installment'] / new_df['MonthlyIncome']
+    new_df['CreditUtilization'] = new_df['CurrentBalance'] / new_df['TotalCreditLimit']
+
+    # Clean categorical
+    cat_cols = new_df.select_dtypes(include='object').columns
+    for col in cat_cols:
+        new_df[col] = new_df[col].str.capitalize()
+
+    return new_df, df['LoanDefault']
+
+
+def get_thresholds():
+    threshold = st.slider('Threshold', 10, 90, 50) / 100
+    recovery_rate = st.slider("Recovery Rate", 0, 100, 40) / 100
+    ccf = st.slider("CCF", 0, 100, 75) / 100
+
+    return threshold, recovery_rate, ccf
+
+
+def compute_metrics(actual, probs, threshold):
+    preds = (probs >= threshold).astype(int)
+
+    metrics = {
+        "roc_auc": roc_auc_score(actual, probs),
+        "pr_auc": average_precision_score(actual, probs),
+        "accuracy": accuracy_score(actual, preds),
+        "precision": precision_score(actual, preds),
+        "recall": recall_score(actual, preds),
+        "f1": f1_score(actual, preds),
+        "conf_matrix": confusion_matrix(actual, preds),
+        "preds": preds
+    }
+
+    return metrics
+
+
+def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
+    df = df.copy()
+
+    df['Probabilities'] = probs
+    df['Predictions'] = preds
+
+    # LGD & EAD
+    df['LGD'] = 1 - recovery_rate
+    df['EAD'] = df['CurrentBalance'] + (df['TotalCreditLimit'] - df['CurrentBalance']) * ccf
+
+    df['ExpectedLoss'] = df['Probabilities'] * df['LGD'] * df['EAD']
+
+    # Cost calculation
+    avg_loan_d = df[df['LoanDefault'] == 1]['LoanAmount'].mean()
+    avg_loan_nd = df[df['LoanDefault'] == 0]['LoanAmount'].mean()
+    avg_interest = df['InterestRate'].mean() / 100
+
+    fn_cost = avg_loan_d * (1 + avg_interest)
+    fp_cost = avg_loan_nd * avg_interest
+
+    tn, fp, fn, tp = confusion_matrix(df['LoanDefault'], preds).ravel()
+
+    return {
+        "df": df,
+        "npas": fn * fn_cost,
+        "opportunity_cost": fp * fp_cost,
+        "avg_pd": df['Probabilities'].mean(),
+        "avg_lgd": df['LGD'].mean(),
+        "avg_ead": df['EAD'].mean(),
+        "avg_el": df['ExpectedLoss'].mean(),
+        "total_el": df['ExpectedLoss'].sum(),
+        "conf": (tn, fp, fn, tp)
+    }
+
+
+# -------------------------------
+# Main Function
+# -------------------------------
 
 def BatchwisePrediction():
-  st.title("Loan Default Risk Estimation for multiple borrowers")
+    st.title("📊 Loan Default Risk - Batch Prediction")
 
-  uploaded_file = st.file_uploader("Upload a CSV file", type="csv")
+    uploaded_file = st.file_uploader("Upload CSV", type="csv")
 
-  if uploaded_file is not None:
-    st.success('Data has been uploaded successfully')
-  else:
-    st.info('Please upload the file to proceed')
-    st.stop()
+    if uploaded_file is None:
+        st.info("Upload file to proceed")
+        st.stop()
 
-  df = pd.read_csv(uploaded_file)
+    df = pd.read_csv(uploaded_file)
+    st.success("File uploaded successfully")
 
-  # Function to convert to PascalCase
-  def to_pascal_case(s):
-      return ''.join(word.capitalize() for word in s.replace('_', ' ').split())
-  
-  # Apply to all column names
-  df.columns = [to_pascal_case(col) for col in df.columns]
+    processed_df, actual = preprocess_data(df)
 
-  if set(df.columns) != set(config.BATCH_FEATURES):
-    st.error("Invalid data. Features are missing.")
-    st.stop()
-  
-  df['LoanDefault'] = 1 - df['LoanPaidBack']
+    threshold, recovery_rate, ccf = get_thresholds()
 
-  target = 'LoanDefault'
+    if st.button("Predict"):
+        model = load_model()
 
-  new_df = df.drop(columns=[target, 'LoanPaidBack'])
-  new_df = new_df[config.EXPECTED_FEATURES]
+        probs = predict_pd_batch(model, processed_df)
 
-  new_df['LoanIncomeRatio'] = round((new_df['LoanAmount'] / new_df['AnnualIncome']), 2)
-  new_df['InstallmentIncomeRatio'] = round((new_df['Installment'] / new_df['MonthlyIncome']), 2)
-  new_df['CreditUtilization'] = round((new_df['CurrentBalance'] / new_df['TotalCreditLimit']), 2)
+        metrics = compute_metrics(actual, probs, threshold)
+        business = compute_business_metrics(
+            df, probs, metrics["preds"], recovery_rate, ccf
+        )
 
-  cat_cols = new_df.select_dtypes(include='object').columns.tolist()
-  for col in cat_cols:
-    new_df[col] = new_df[col].str.capitalize()
+        # -------------------------------
+        # Display Metrics
+        # -------------------------------
+        col1, col2 = st.columns(2)
+        col1.metric("ROC-AUC", round(metrics["roc_auc"], 2))
+        col2.metric("PR-AUC", round(metrics["pr_auc"], 2))
 
-  #st.dataframe(new_df)
-  actual = df[[target]]
+        st.markdown("---")
 
-  threshold = st.slider('Threshold value', 10, 90, 5)
-  recovery_rate = st.slider("Recovery Rate", 0, 100, 40)
-  ccf = st.slider("CCF (Credit Conversion Factor)", 0, 100, 75)
+        col3, col4, col5, col6 = st.columns(4)
+        col3.metric("Accuracy", f"{metrics['accuracy']*100:.2f}%")
+        col4.metric("Precision", f"{metrics['precision']*100:.2f}%")
+        col5.metric("Recall", f"{metrics['recall']*100:.2f}%")
+        col6.metric("F1", f"{metrics['f1']*100:.2f}%")
 
-  threshold = round(threshold/100, 2)
-  recovery_rate = round(recovery_rate/100, 2)
-  ccf = round(ccf/100, 2)
+        tn, fp, fn, tp = business["conf"]
 
-  if st.button('Predict'):
-    st.markdown("---")
-    ml_model = load_model()
-  
-    probabilities = predict_pd_batch(ml_model, new_df)
-  
-    roc_auc = roc_auc_score(actual, probabilities)
-    pr_auc = average_precision_score(actual, probabilities)
+        st.markdown("---")
+        col7, col8, col9, col10 = st.columns(4)
+        col7.metric("TN", tn)
+        col8.metric("FN", fn)
+        col9.metric("FP", fp)
+        col10.metric("TP", tp)
 
-    st.container()
-    col1, col2 = st.columns(2)
-    col1.metric("ROC-AUC Score", round(roc_auc, 2), border=True)
-    col2.metric("PR-AUC Score", round(pr_auc, 2), border=True)
-    st.markdown("---")
+        st.markdown("---")
+        col11, col12 = st.columns(2)
+        col11.metric("Opportunity Cost", round(business["opportunity_cost"]))
+        col12.metric("NPAs", round(business["npas"]))
 
-    st.container()
-    col3, col4, col5, col6 = st.columns(4)
-    predictions = (probabilities >= threshold).astype(int)
-    Accuracy = accuracy_score(actual, predictions)
-    Precision = precision_score(actual, predictions)
-    Recall = recall_score(actual, predictions)
-    F1 = f1_score(actual, predictions)
+        st.markdown("---")
 
-    col3.metric("Accuracy", f"{round(Accuracy*100, 2)}%", border=True)
-    col4.metric("Precision", f"{round(Precision*100, 2)}%", border=True)
-    col5.metric("Recall", f"{round(Recall*100, 2)}%", border=True)
-    col6.metric("F1", f"{round(F1*100, 2)}%", border=True)
-    
-    tn, fp, fn, tp = confusion_matrix(actual, predictions).ravel()
-    miss_rate = fn / (tp + fn)
+        col13, col14, col15, col16 = st.columns(4)
+        col13.metric("Avg PD", f"{business['avg_pd']*100:.2f}%")
+        col14.metric("Avg LGD", f"{business['avg_lgd']*100:.2f}%")
+        col15.metric("Avg EAD", round(business["avg_ead"]))
+        col16.metric("Total EL", round(business["total_el"]))
 
-    flagged_risk = predictions.mean()
+        # -------------------------------
+        # Risk Segmentation
+        # -------------------------------
+        df_result = business["df"]
 
-    st.markdown('---')
-    st.container()
-    col7, col8, col9, col10, col11 = st.columns(5)
-    col7.metric('True Negatives', tn, border=True)
-    col8.metric('False Negatives', fn, border=True)
-    col9.metric('False Positives', fp, border=True)
-    col10.metric('True Positives', tp, border=True)
-    col11.metric('flagged_risk', round(flagged_risk*100, 2), border=True)
+        df_result["Risk Bucket"] = pd.cut(
+            df_result['Probabilities'],
+            bins=[0, 0.3, 0.6, 1],
+            labels=["Low", "Medium", "High"]
+        )
 
-    st.markdown('---')
+        st.bar_chart(df_result["Risk Bucket"].value_counts())
 
-    new_df['LoanDefault'] = actual
-    new_df['Probabilities'] = probabilities
-    new_df['Predictions'] = predictions
-    
-    avg_loan_amount_d = new_df[new_df['LoanDefault'] == 1]['LoanAmount'].mean()
-    avg_loan_amount_nd = new_df[new_df['LoanDefault'] == 0]['LoanAmount'].mean()
-    avg_interest = (new_df['InterestRate'].mean())/100
-
-    fp_cost = avg_loan_amount_nd * avg_interest
-    fn_cost = avg_loan_amount_d + (avg_loan_amount_d*avg_interest)
-
-    npas = fn*fn_cost
-    opportunity_cost = fp*fp_cost
-
-    new_df['LGD'] =  1 - recovery_rate
-
-    new_df['EAD'] = new_df['CurrentBalance'] + \
-            (new_df['TotalCreditLimit'] - new_df['CurrentBalance']) * ccf
-
-    new_df['ElRatio'] = new_df['Probabilities'] * new_df['LGD']
-    new_df['ExpectedLoss'] = new_df['ElRatio'] * new_df['EAD']
-
-    avg_pd = new_df['Probabilities'].mean()
-    avg_lgd = new_df['LGD'].mean()
-    avg_ead = new_df['EAD'].mean()
-    avg_el = new_df['ExpectedLoss'].mean()
-    total_el = new_df['ExpectedLoss'].sum()
-
-    col12, col13 = st.columns(2)
-    col12.metric('Opportunity Cost', f"{round(opportunity_cost)}/-", delta_color='orange', border=True)
-    col13.metric('NPAs (Non-Performing Assets)', f"{round(npas)}/-", delta_color='red', border=True)
-
-    st.markdown('---')
-    st.container()
-    col14, col15, col16, col17, col18 = st.columns(5)
-    col14.metric('Avg PD (Probability of Default):', f'{round(avg_pd*100, 2)}%', border=True)
-    col15.metric('Avg LGD (Loss Given Default):', f'{round(avg_lgd*100, 2)}%', border=True)
-    col16.metric('Avg EAD (Exposure at Default):', f'{round(avg_ead)}/-', border=True)
-    col17.metric('Avg Expected Loss:', f'{round(avg_el)}/-', border=True)
-    col18.metric('Total Expected Loss:', f'{round(total_el)}/-', border=True)
-
-    st.markdown('---')
-
-    new_df["Risk Bucket"] = pd.cut(new_df['Probabilities'], bins=[0, 0.3, 0.6, 1],
-                                   labels=["Low Risk", "Medium Risk", "High Risk"])
-
-    st.subheader("📊 Risk Segmentation Distribution")
-    
-    st.bar_chart(new_df["Risk Bucket"].value_counts())
-
-    st.subheader("⬇️ Export Scored Portfolio")
-
-    st.download_button(label="Download Scored Dataset", data=new_df.to_csv(index=False), 
-                       file_name="scored_portfolio.csv", mime="text/csv")
-
-    st.info(f"""At threshold {threshold}, the model detects {Recall*100:.2f}% of defaulters 
-    while missing {miss_rate*100:.2f}%. Approximately {flagged_risk*100:.2f}% 
-    of the portfolio is flagged for review.
-    """)
+        # -------------------------------
+        # Download
+        # -------------------------------
+        st.download_button(
+            "Download Results",
+            df_result.to_csv(index=False),
+            "scored_portfolio.csv"
+        )
