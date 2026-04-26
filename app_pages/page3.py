@@ -11,7 +11,6 @@ importlib.reload(config)
 
 from training.load_data import load_data
 
-
 # -------------------------------
 # Helper Functions
 # -------------------------------
