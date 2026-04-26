@@ -98,7 +98,7 @@ def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
         "df": df,
         "npas": fn * fn_cost,
         "opportunity_cost": fp * fp_cost,
-        "weighted_pd": weighted_pd
+        "weighted_pd": weighted_pd,
         "avg_pd": df['Probabilities'].mean(),
         "avg_lgd": df['LGD'].mean(),
         "avg_ead": df['EAD'].mean(),
