@@ -89,6 +89,7 @@ def PortfolioDashboard():
     col3.metric('Median Monthly Income', f"₹{kpi['med_monthly_income']:.0f}")
     col4.metric('Avg Loan Amount', f"₹{kpi['avg_loan']:.0f}")
 
+    st.container()
     col5, col6, col7, col8, col9 = st.columns(5)
     col5.metric('Max Credit Score', kpi['max_score'])
     col6.metric('Min Credit Score', kpi['min_score'])
@@ -107,6 +108,7 @@ def PortfolioDashboard():
     # -------------------------------
     # Charts
     # -------------------------------
+    st.container()
     col10, col11, col12 = st.columns(3)
 
     col10.subheader("Default by Employment")
@@ -123,6 +125,7 @@ def PortfolioDashboard():
     # -------------------------------
     # Insights
     # -------------------------------
+    st.container()
     col13, col14, col15 = st.columns(3)
 
     emp = get_top_risk_segment(segments["employment"], 'EmploymentStatus')
@@ -138,6 +141,7 @@ def PortfolioDashboard():
     # -------------------------------
     # Distribution Charts
     # -------------------------------
+    st.container()
     col16, col17, col18 = st.columns(3)
 
     # Default Distribution
