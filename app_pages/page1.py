@@ -113,7 +113,7 @@ def RiskAssessment():
     override = st.checkbox("Override LGD?")
 
     if override:
-        lgd = st.slider("Adjust LGD", 0.0, 1.0, float(lgd))
+        lgd = st.slider("Adjust LGD", 0.0, 1.0, 0.5)
         
     # Predict
     if st.button("Predict"):
@@ -132,7 +132,7 @@ def RiskAssessment():
         # --- LGD & EAD ---
         lgd_mapping = {
             'Home': 0.2,
-            'Car': 0.35,
+            'Car': 0.4,
             'Educational': 0.3,
             'Medical': 0.35,
             'Debt consolidation': 0.45,
@@ -141,11 +141,6 @@ def RiskAssessment():
             'Others': 0.6 }
 
         lgd = lgd_mapping[valid_df['LoanPurpose'].iloc[0]]
-
-        override = st.checkbox("Override LGD?")
-
-        if override:
-            lgd = st.slider("Adjust LGD", 0.0, 1.0, float(lgd))
 
         balance = valid_df['CurrentBalance'].iloc[0]
         limit = valid_df['TotalCreditLimit'].iloc[0]
