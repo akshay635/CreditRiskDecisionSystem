@@ -192,8 +192,8 @@ def BatchwisePrediction():
             col14, col15, col16, col17 = st.columns(4)
             col14.metric("Avg PD", f"{business['avg_pd']*100:.2f}%", border=True)
             col15.metric("Avg LGD", f"{business['avg_lgd']*100:.2f}%", border=True)
-            col16.metric("Avg EAD", round(business["avg_ead"]), border=True)
-            col17.metric("Total EL", round(business["total_el"]), border=True)
+            col16.metric("Avg EAD", f"₹{round(business["avg_ead"])}/-", border=True)
+            col17.metric("Total Expected Loss", f"₹{round(business["total_el"])}/-", border=True)
 
         # -------------------------------
         # Risk Segmentation
