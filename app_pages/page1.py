@@ -24,14 +24,13 @@ def get_thresholds():
 
     low = st.slider("Lower Threshold", 0, 45, 30) / 100
     high = st.slider("Higher Threshold", 45, 100, 60) / 100
-    recovery_rate = st.slider("Recovery Rate", 0, 100, 40) / 100
     ccf = st.slider("Credit Conversion Factor (CCF)", 0, 100, 75) / 100
 
     if low >= high:
         st.error("⚠️ Lower threshold must be less than higher threshold")
         st.stop()
 
-    return round(low, 2), round(high, 2), round(recovery_rate, 2), round(ccf, 2)
+    return round(low, 2), round(high, 2), round(ccf, 2)
 
 
 def compute_ead(balance, limit, ccf):
@@ -104,7 +103,7 @@ def RiskAssessment():
         st.stop()
 
     # Thresholds
-    low, high, recovery_rate, ccf = get_thresholds()
+    low, high, ccf = get_thresholds()
 
     loan_amount = valid_df['LoanAmount'].iloc[0]
     if loan_amount <= 0:
@@ -126,7 +125,22 @@ def RiskAssessment():
         decision = get_decision(prob, low, high)
 
         # --- LGD & EAD ---
-        lgd = 1 - recovery_rate
+        lgd_mapping = {
+            'Home': 0.2,
+            'Car': 0.35,
+            'Educational': 0.3,
+            'Medical': 0.35,
+            'Debt consolidation': 0.45,
+            'Vacation': 0.5,
+            'Business': 0.5,
+            'Others': 0.6 }
+
+        lgd = lgd_mapping[valid_df['LoanPurpose'].iloc[0]]
+
+        override = st.checkbox("Override LGD?")
+
+        if override:
+            lgd = st.slider("Adjust LGD", 0.0, 1.0, float(lgd))
 
         balance = valid_df['CurrentBalance'].iloc[0]
         limit = valid_df['TotalCreditLimit'].iloc[0]
