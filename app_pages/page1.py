@@ -104,6 +104,20 @@ def RiskAssessment():
     if loan_amount <= 0:
         st.error("⚠️ Loan amount must be greater than 0")
         st.stop()
+
+    lgd_mapping = {
+            'Home': 0.2,
+            'Car': 0.4,
+            'Educational': 0.3,
+            'Medical': 0.35,
+            'Debt consolidation': 0.45,
+            'Vacation': 0.5,
+            'Business': 0.5,
+            'Others': 0.6 }
+
+    lgd = lgd_mapping.get(valid_df['LoanPurpose'].iloc[0], 0.5)
+
+    lgd = st.slider("Adjust LGD", 0.0, 1.0, float(lgd))
         
     # Predict
     if st.button("Predict"):
@@ -120,20 +134,6 @@ def RiskAssessment():
         decision = get_decision(prob, low, high)
 
         # --- LGD & EAD ---
-        lgd_mapping = {
-            'Home': 0.2,
-            'Car': 0.4,
-            'Educational': 0.3,
-            'Medical': 0.35,
-            'Debt consolidation': 0.45,
-            'Vacation': 0.5,
-            'Business': 0.5,
-            'Others': 0.6 }
-
-        lgd = lgd_mapping.get(valid_df['LoanPurpose'].iloc[0], 0.5)
-
-        lgd = st.slider("Adjust LGD", 0.0, 1.0, float(lgd))
-
         balance = valid_df['CurrentBalance'].iloc[0]
         limit = valid_df['TotalCreditLimit'].iloc[0]
         ead = compute_ead(balance, limit, ccf)
