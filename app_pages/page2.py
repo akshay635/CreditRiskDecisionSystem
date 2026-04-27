@@ -139,7 +139,7 @@ def BatchwisePrediction():
 
     processed_df, actual = preprocess_data(df)
 
-    threshold, recovery_rate, ccf = get_thresholds()
+    threshold, ccf = get_thresholds()
 
     if st.button("Predict"):
         model = load_model()
