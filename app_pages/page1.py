@@ -32,7 +32,6 @@ def get_thresholds():
 
     return round(low, 2), round(high, 2), round(ccf, 2)
 
-
 def compute_ead(balance, limit, ccf):
     return balance + (limit - balance) * ccf
 
@@ -40,16 +39,15 @@ def compute_expected_loss(pd, lgd, ead):
     return pd * lgd * ead
 
 def display_summary(prob, credit_score, original_score, grade):
-    st.container()
-    col1, col2, col3 = st.columns(3)
-
-    col1.metric("PD", f"{prob:.2%}", border=True)
-
-    delta = credit_score - original_score
-    col2.metric("Credit Score", credit_score, delta, border=True)
-
-    col3.metric("Grade", grade, border=True)
-
+    with st.container():
+        col1, col2, col3 = st.columns(3)
+    
+        col1.metric("PD", f"{prob:.2%}", border=True)
+    
+        delta = credit_score - original_score
+        col2.metric("Credit Score", credit_score, delta, border=True)
+    
+        col3.metric("Grade", grade, border=True)
 
 def display_risk_decision(prob, low, high, decision):
     if prob <= low:
@@ -60,13 +58,13 @@ def display_risk_decision(prob, low, high, decision):
         st.error(decision)
 
 def display_risk_metrics(pd, lgd, ead, el):
-    st.container()
-    col1, col2, col3, col4 = st.columns(4)
-
-    col1.metric("PD", f"{pd*100:.2f}%", border=True)
-    col2.metric("LGD", f"{lgd*100:.2f}%", border=True)
-    col3.metric("EAD", f"₹{round(ead)}/-", border=True)
-    col4.metric("Expected Loss", f"₹{round(el)}/-", border=True)
+    with st.container():
+        col1, col2, col3, col4 = st.columns(4)
+    
+        col1.metric("PD", f"{pd*100:.2f}%", border=True)
+        col2.metric("LGD", f"{lgd*100:.2f}%", border=True)
+        col3.metric("EAD", f"₹{round(ead)}/-", border=True)
+        col4.metric("Expected Loss", f"₹{round(el)}/-", border=True)
 
 def display_explainability(model):
     features_df = get_feature_importance(model)
@@ -155,8 +153,8 @@ def RiskAssessment():
 
         display_risk_decision(prob, low, high, decision)
 
-        st.container()
-        st.metric("Risk Level", risk_level, border=True)
+        with st.container():
+            st.metric("Risk Level", risk_level, border=True)
 
         st.info("""
         Decision Logic:
