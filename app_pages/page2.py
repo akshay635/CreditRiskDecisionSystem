@@ -179,14 +179,14 @@ def BatchwisePrediction():
 
         st.markdown("---")
         with st.container():
-            col11, col12 = st.columns(2)
+            col11, col12, col13 = st.columns(3)
             col11.metric("Opportunity Cost", round(business["opportunity_cost"]), border=True)
             col12.metric("NPAs", round(business["npas"]), border=True)
+            col13.metric("Weighted PD", f"{business['weighted_pd']*100:.2f}%", border=True)
 
         st.markdown("---")
         with st.container():
-            col13, col14, col15, col16, col17 = st.columns(5)
-            col13.metric("Weighted PD", f"{business['weighted_pd']*100:.2f}%", border=True)
+            col14, col15, col16, col17 = st.columns(4)
             col14.metric("Avg PD", f"{business['avg_pd']*100:.2f}%", border=True)
             col15.metric("Avg LGD", f"{business['avg_lgd']*100:.2f}%", border=True)
             col16.metric("Avg EAD", round(business["avg_ead"]), border=True)
