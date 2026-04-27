@@ -130,7 +130,9 @@ def RiskAssessment():
             'Business': 0.5,
             'Others': 0.6 }
 
-        lgd = lgd_mapping[valid_df['LoanPurpose'].iloc[0]]
+        lgd = lgd_mapping.get(valid_df['LoanPurpose'].iloc[0], 0.5)
+
+        lgd = st.slider("Adjust LGD", 0.0, 1.0, float(lgd))
 
         balance = valid_df['CurrentBalance'].iloc[0]
         limit = valid_df['TotalCreditLimit'].iloc[0]
