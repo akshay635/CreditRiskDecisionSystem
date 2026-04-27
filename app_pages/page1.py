@@ -104,11 +104,6 @@ def RiskAssessment():
     if loan_amount <= 0:
         st.error("⚠️ Loan amount must be greater than 0")
         st.stop()
-
-    override = st.checkbox("Override LGD?")
-
-    if override:
-        lgd = st.slider("Adjust LGD", 0.0, 1.0, 0.5)
         
     # Predict
     if st.button("Predict"):
