@@ -61,9 +61,9 @@ def display_risk_metrics(pd, lgd, ead, el):
     with st.container():
         col1, col2, col3, col4 = st.columns(4)
     
-        col1.metric("PD", f"{pd*100:.2f}%", border=True)
-        col2.metric("LGD", f"{lgd*100:.2f}%", border=True)
-        col3.metric("EAD", f"₹{round(ead)}/-", border=True)
+        col1.metric("PD (Probability of Default')", f"{pd*100:.2f}%", border=True)
+        col2.metric("LGD (Loss-Given Default)", f"{lgd*100:.2f}%", border=True)
+        col3.metric("EAD (Exposure at Default)", f"₹{round(ead)}/-", border=True)
         col4.metric("Expected Loss", f"₹{round(el)}/-", border=True)
 
 def display_explainability(model):
