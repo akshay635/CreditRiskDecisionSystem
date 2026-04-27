@@ -48,10 +48,9 @@ def preprocess_data(df):
 
 def get_thresholds():
     threshold = st.slider('Threshold', 10, 90, 50) / 100
-    recovery_rate = st.slider("Recovery Rate", 0, 100, 40) / 100
     ccf = st.slider("CCF", 0, 100, 75) / 100
 
-    return threshold, recovery_rate, ccf
+    return threshold, ccf
 
 
 def compute_metrics(actual, probs, threshold):
@@ -76,6 +75,7 @@ def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
 
     df['Probabilities'] = probs
     df['Predictions'] = preds
+    
     mappings = {
     'Home': 0.2,
     'Car': 0.35,
