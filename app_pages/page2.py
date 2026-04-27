@@ -78,20 +78,23 @@ def compute_business_metrics(df, probs, preds, ccf):
     
     mappings = {
     'Home': 0.2,
-    'Car': 0.35,
+    'Car': 0.4,
     'Educational': 0.3,
     'Medical': 0.35,
     'Debt consolidation': 0.45,
     'Vacation': 0.5,
-    'Business': 0.5,
-    'Others': 0.6
+    'Business': 0.6,
+    'Others': 0.7
     }
-
-    df['RR'] = df['LoanPurpose'].map(mappings)
     
     # LGD & EAD
     df['EAD'] = df['CurrentBalance'] + (df['TotalCreditLimit'] - df['CurrentBalance']) * ccf
-    df['LGD'] = (1 - df['RR'])
+    df['LGD'] = df['LoanPurpose'].map(mappings)
+
+    df.loc[df['LoanTerm'] >= 36, 'LGD'] += 0.05
+    df.loc[df['LoanTerm'] >= 60, 'LGD'] += 0.03
+
+    df['LGD'] = df['LGD'].clip(0, 1)
 
     df['ExpectedLoss'] = df['Probabilities'] * df['LGD'] * df['EAD']
     df['PDExposure'] = (df['Probabilities']*df['EAD'])
