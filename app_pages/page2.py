@@ -76,9 +76,21 @@ def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
 
     df['Probabilities'] = probs
     df['Predictions'] = preds
+    mappings = {
+    'Home': 0.2,
+    'Car': 0.35,
+    'Educational': 0.3,
+    'Medical': 0.35,
+    'Debt consolidation': 0.45,
+    'Vacation': 0.5,
+    'Business': 0.5,
+    'Others': 0.6
+    }
 
+    df['RR'] = df['LoanPurpose'].apply(mappings)
+    
     # LGD & EAD
-    df['LGD'] = 1 - recovery_rate
+    df['LGD'] = df['EAD']*(1 - df['RR'])
     df['EAD'] = df['CurrentBalance'] + (df['TotalCreditLimit'] - df['CurrentBalance']) * ccf
 
     df['ExpectedLoss'] = df['Probabilities'] * df['LGD'] * df['EAD']
