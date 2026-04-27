@@ -70,7 +70,7 @@ def compute_metrics(actual, probs, threshold):
     return metrics
 
 
-def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
+def compute_business_metrics(df, probs, preds, ccf):
     df = df.copy()
 
     df['Probabilities'] = probs
