@@ -45,13 +45,11 @@ def preprocess_data(df):
 
     return new_df, df['LoanDefault']
 
-
 def get_thresholds():
     threshold = st.slider('Threshold', 10, 90, 50) / 100
     ccf = st.slider("CCF", 0, 100, 75) / 100
 
     return threshold, ccf
-
 
 def compute_metrics(actual, probs, threshold):
     preds = (probs >= threshold).astype(int)
@@ -68,7 +66,6 @@ def compute_metrics(actual, probs, threshold):
     }
 
     return metrics
-
 
 def compute_business_metrics(df, probs, preds, ccf):
     df = df.copy()
@@ -96,6 +93,7 @@ def compute_business_metrics(df, probs, preds, ccf):
 
     df['LGD'] = df['LGD'].clip(0, 1)
 
+    # Expected Loss and PDExposure
     df['ExpectedLoss'] = df['Probabilities'] * df['LGD'] * df['EAD']
     df['PDExposure'] = (df['Probabilities']*df['EAD'])
     weightedPD = df['PDExposure'].sum()/df['EAD'].sum()
@@ -122,7 +120,6 @@ def compute_business_metrics(df, probs, preds, ccf):
         "total_el": df['ExpectedLoss'].sum(),
         "conf": (tn, fp, fn, tp)
     }
-
 
 # -------------------------------
 # Main Function
