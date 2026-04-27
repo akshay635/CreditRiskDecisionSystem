@@ -148,7 +148,7 @@ def BatchwisePrediction():
 
         metrics = compute_metrics(actual, probs, threshold)
         business = compute_business_metrics(
-            df, probs, metrics["preds"], recovery_rate, ccf
+            df, probs, metrics["preds"], ccf
         )
 
         # -------------------------------
