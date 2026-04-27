@@ -117,6 +117,13 @@ def RiskAssessment():
 
     lgd = lgd_mapping.get(valid_df['LoanPurpose'].iloc[0], 0.5)
 
+    # Step 2: Adjustment for loan term
+    if valid_df['LoanTerm'].iloc[0] >= 36:
+        lgd += 0.05
+    
+    # Step 3: Cap LGD
+    lgd = min(lgd, 1.0)
+
     lgd = st.slider("Adjust LGD", 0.0, 1.0, float(lgd))
         
     # Predict
