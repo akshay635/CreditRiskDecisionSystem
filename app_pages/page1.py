@@ -66,8 +66,8 @@ def display_risk_metrics(pd, lgd, ead, el):
 
     col1.metric("PD", f"{pd*100:.2f}%")
     col2.metric("LGD", f"{lgd*100:.2f}%")
-    col3.metric("EAD", f"₹{round(ead)}")
-    col4.metric("Expected Loss", f"₹{round(el)}")
+    col3.metric("EAD", f"₹{round(ead)}/-")
+    col4.metric("Expected Loss", f"₹{round(el)}/-")
 
 
 def display_explainability(model):
