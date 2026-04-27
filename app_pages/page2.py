@@ -87,7 +87,7 @@ def compute_business_metrics(df, probs, preds, recovery_rate, ccf):
     'Others': 0.6
     }
 
-    df['RR'] = df['LoanPurpose'].apply(mappings)
+    df['RR'] = df['LoanPurpose'].map(mappings)
     
     # LGD & EAD
     df['LGD'] = df['EAD']*(1 - df['RR'])
