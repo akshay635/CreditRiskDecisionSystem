@@ -36,10 +36,8 @@ def get_thresholds():
 def compute_ead(balance, limit, ccf):
     return balance + (limit - balance) * ccf
 
-
 def compute_expected_loss(pd, lgd, ead):
     return pd * lgd * ead
-
 
 def display_summary(prob, credit_score, original_score, grade):
     col1, col2, col3 = st.columns(3)
@@ -60,7 +58,6 @@ def display_risk_decision(prob, low, high, decision):
     else:
         st.error(decision)
 
-
 def display_risk_metrics(pd, lgd, ead, el):
     col1, col2, col3, col4 = st.columns(4)
 
@@ -68,7 +65,6 @@ def display_risk_metrics(pd, lgd, ead, el):
     col2.metric("LGD", f"{lgd*100:.2f}%")
     col3.metric("EAD", f"₹{round(ead)}/-")
     col4.metric("Expected Loss", f"₹{round(el)}/-")
-
 
 def display_explainability(model):
     features_df = get_feature_importance(model)
@@ -81,7 +77,6 @@ def display_explainability(model):
 
         top_features = features_df['Cleaned_Features'].head(3).tolist()
         st.info(f"{', '.join(top_features)} are the top influencing features.")
-
 
 # -------------------------------
 # Main App
